@@ -1,7 +1,6 @@
 plugins {
     java
     id("net.minecrell.plugin-yml.bukkit") version "0.3.0"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 group = "dev.jaqobb"

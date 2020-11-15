@@ -24,8 +24,31 @@
 
 package dev.jaqobb.paidactivities;
 
+import java.util.logging.Level;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PaidActivitiesPlugin extends JavaPlugin {
 
+    private Economy economy;
+
+    @Override
+    public void onEnable() {
+        this.economy = this.setupEconomy();
+        if (this.economy == null) {
+            this.getLogger().log(Level.WARNING, "Could not setup economy. Make sure you have Vault and economy plugin installed.");
+            this.getLogger().log(Level.WARNING, "Disabling plugin...");
+            this.setEnabled(false);
+            return;
+        }
+    }
+
+    private Economy setupEconomy() {
+        RegisteredServiceProvider<Economy> economyServiceProvider = this.getServer().getServicesManager().getRegistration(Economy.class);
+        if (economyServiceProvider == null) {
+            return null;
+        }
+        return this.economy = economyServiceProvider.getProvider();
+    }
 }
