@@ -6,7 +6,7 @@ plugins {
 
 group = "dev.jaqobb"
 version = "1.0.0"
-description = "Spigot plugin that lets you reward players when they do certain activities"
+description = "Spigot plugin that rewards players when they do certain activities"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
