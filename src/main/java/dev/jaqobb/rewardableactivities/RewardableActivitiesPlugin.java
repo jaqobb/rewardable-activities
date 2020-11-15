@@ -22,14 +22,14 @@
  * SOFTWARE.
  */
 
-package dev.jaqobb.paidactivities;
+package dev.jaqobb.rewardableactivities;
 
 import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class PaidActivitiesPlugin extends JavaPlugin {
+public final class RewardableActivitiesPlugin extends JavaPlugin {
 
     private Economy economy;
 
@@ -40,8 +40,7 @@ public final class PaidActivitiesPlugin extends JavaPlugin {
             this.getLogger().log(Level.INFO, "Economy has been successfully setup.");
             this.getLogger().log(Level.INFO, "Economy provider: " + this.economy.getName());
         } else {
-            this.getLogger().log(Level.INFO, "Could not find Vault or economy plugin, convenient economy rewards will not be supported.");
-
+            this.getLogger().log(Level.INFO, "Could not find Vault or economy plugin, economy rewards will not be supported.");
         }
     }
 

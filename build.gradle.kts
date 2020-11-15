@@ -13,8 +13,8 @@ java {
 }
 
 bukkit {
-    name = "PaidActivities"
-    main = "dev.jaqobb.paidactivities.PaidActivitiesPlugin"
+    name = "RewardableActivities"
+    main = "dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin"
     version = project.version as String
     softDepend = listOf("Vault")
     description = project.description

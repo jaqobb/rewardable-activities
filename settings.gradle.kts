@@ -1,1 +1,1 @@
-rootProject.name = "paid-activities"
+rootProject.name = "rewardable-activities"
