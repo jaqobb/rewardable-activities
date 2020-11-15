@@ -16,7 +16,7 @@ bukkit {
     name = "PaidActivities"
     main = "dev.jaqobb.paidactivities.PaidActivitiesPlugin"
     version = project.version as String
-    depend = listOf("Vault")
+    softDepend = listOf("Vault")
     description = project.description
     author = "jaqobb"
     website = "https://jaqobb.dev"

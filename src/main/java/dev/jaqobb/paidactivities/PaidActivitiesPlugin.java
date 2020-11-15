@@ -36,15 +36,19 @@ public final class PaidActivitiesPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.economy = this.setupEconomy();
-        if (this.economy == null) {
-            this.getLogger().log(Level.WARNING, "Could not setup economy. Make sure you have Vault and economy plugin installed.");
-            this.getLogger().log(Level.WARNING, "Disabling plugin...");
-            this.setEnabled(false);
-            return;
+        if (this.economy != null) {
+            this.getLogger().log(Level.INFO, "Economy has been successfully setup.");
+            this.getLogger().log(Level.INFO, "Economy provider: " + this.economy.getName());
+        } else {
+            this.getLogger().log(Level.INFO, "Could not find Vault or economy plugin, convenient economy rewards will not be supported.");
+
         }
     }
 
     private Economy setupEconomy() {
+        if (!this.getServer().getPluginManager().isPluginEnabled("Vault")) {
+            return null;
+        }
         RegisteredServiceProvider<Economy> economyServiceProvider = this.getServer().getServicesManager().getRegistration(Economy.class);
         if (economyServiceProvider == null) {
             return null;
