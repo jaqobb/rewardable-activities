@@ -3,15 +3,13 @@ block:
     stone:
       default:
         chance: 75.0
-        rewards:
-          economy-minimum: 0
-          economy-maximum: 4
-          commands:
-          - "say {player} broke a stone! (default)"
+        minimum-economy: 0
+        maximum-economy: 4
+        commands:
+        - "say {player} broke a stone! (default)"
       vip:
         chance: 75.0
-        rewards:
-          economy-minimum: 0
-          economy-maximum: 8
-          commands:
-          - "say {player} broke a stone! (VIP)"
+        minimum-economy: 0
+        maximum-economy: 8
+        commands:
+        - "say {player} broke a stone! (VIP)"
