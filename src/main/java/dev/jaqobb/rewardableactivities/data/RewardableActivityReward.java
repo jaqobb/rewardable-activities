@@ -27,43 +27,69 @@ package dev.jaqobb.rewardableactivities.data;
 import dev.jaqobb.rewardableactivities.util.RandomUtils;
 import java.util.Collection;
 import java.util.Collections;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public final class RewardableActivityReward {
 
+    private final String group;
     private final double chance;
-    private final int minimumEconomy;
-    private final int maximumEconomy;
+    private final double minimumEconomy;
+    private final double maximumEconomy;
     private final Collection<String> commands;
 
     public RewardableActivityReward(
+        final String group,
         final double chance,
-        final int minimumEconomy,
-        final int maximumEconomy,
+        final double minimumEconomy,
+        final double maximumEconomy,
         final Collection<String> commands
     ) {
+        this.group = group;
         this.chance = chance;
         this.minimumEconomy = minimumEconomy;
         this.maximumEconomy = maximumEconomy;
         this.commands = commands;
     }
 
+    public String getGroup() {
+        return this.group;
+    }
+
     public double getChance() {
         return this.chance;
     }
 
-    public int getMinimumEconomy() {
+    public boolean testChance() {
+        return RandomUtils.chance(this.chance);
+    }
+
+    public double getMinimumEconomy() {
         return this.minimumEconomy;
     }
 
-    public int getMaximumEconomy() {
+    public double getMaximumEconomy() {
         return this.maximumEconomy;
     }
 
-    public int getRandomEconomy() {
-        return RandomUtils.getRandomInt(this.minimumEconomy, this.maximumEconomy);
+    public double getRandomEconomy() {
+        return RandomUtils.getRandomDouble(this.minimumEconomy, this.maximumEconomy);
+    }
+
+    public void depositEconomy(
+        final Economy economy,
+        final Player player,
+        final double economyToDeposit
+    ) {
+        economy.depositPlayer(player, economyToDeposit);
     }
 
     public Collection<String> getCommands() {
         return Collections.unmodifiableCollection(this.commands);
+    }
+
+    public void executeCommands(final Player player) {
+        this.commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{player}", player.getName())));
     }
 }

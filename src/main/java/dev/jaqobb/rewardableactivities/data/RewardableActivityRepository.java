@@ -24,6 +24,63 @@
 
 package dev.jaqobb.rewardableactivities.data;
 
+import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+
 public final class RewardableActivityRepository {
 
+    private final RewardableActivitiesPlugin plugin;
+    private final Map<Material, RewardableActivity> blockBreakRewardableActivities;
+
+    public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
+        this.plugin = plugin;
+        this.blockBreakRewardableActivities = new EnumMap<>(Material.class);
+    }
+
+    public void loadAllRewardableActivities() {
+        this.loadBlockBreakRewardableActivities();
+    }
+
+    public void loadBlockBreakRewardableActivities() {
+        this.blockBreakRewardableActivities.clear();
+        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialName -> Material.getMaterial(materialName.toUpperCase())));
+    }
+
+    private <T> Map<T, RewardableActivity> loadRewardableActivities(
+        final String path,
+        final Function<String, T> keyFunction
+    ) {
+        Map<T, RewardableActivity> rewardableActivities = new HashMap<>(16);
+        ConfigurationSection mainSection = this.plugin.getConfig().getConfigurationSection(path);
+        for (String key : mainSection.getKeys(false)) {
+            Map<String, RewardableActivityReward> rewards = new LinkedHashMap<>(16);
+            ConfigurationSection rewardsSection = mainSection.getConfigurationSection(key);
+            for (String group : rewardsSection.getKeys(false)) {
+                ConfigurationSection rewardSection = rewardsSection.getConfigurationSection(group);
+                Number chance = (Number) rewardSection.get("chance");
+                Number minimumEconomy = rewardSection.isSet("minimum-economy") ? (Number) rewardSection.get("minimum-economy") : 0.0D;
+                Number maximumEconomy = rewardSection.isSet("maximum-economy") ? (Number) rewardSection.get("maximum-economy") : 0.0D;
+                Collection<String> commands = rewardSection.getStringList("commands");
+                rewards.put(group, new RewardableActivityReward(group, chance.doubleValue(), minimumEconomy.doubleValue(), maximumEconomy.doubleValue(), commands));
+            }
+            rewardableActivities.put(keyFunction.apply(key), new RewardableActivity(key, rewards));
+        }
+        return rewardableActivities;
+    }
+
+    public Collection<RewardableActivity> getBlockBreakRewardableActivities() {
+        return Collections.unmodifiableCollection(this.blockBreakRewardableActivities.values());
+    }
+
+    public RewardableActivity getBlockBreakRewardableActivity(final Material material) {
+        return this.blockBreakRewardableActivities.get(material);
+    }
 }

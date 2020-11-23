@@ -24,17 +24,22 @@
 
 package dev.jaqobb.rewardableactivities;
 
+import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
+import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
 import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RewardableActivitiesPlugin extends JavaPlugin {
 
     private Economy economy;
+    private RewardableActivityRepository repository;
 
     @Override
     public void onEnable() {
+        this.saveDefaultConfig();
         this.economy = this.setupEconomy();
         if (this.economy != null) {
             this.getLogger().log(Level.INFO, "Economy has been successfully setup.");
@@ -42,6 +47,22 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         } else {
             this.getLogger().log(Level.INFO, "Could not find Vault or economy plugin, economy rewards will not be supported.");
         }
+        this.getLogger().log(Level.INFO, "Loading rewardable activities...");
+        this.repository = new RewardableActivityRepository(this);
+        this.repository.loadAllRewardableActivities();
+        this.getLogger().log(Level.INFO, "Loaded rewardable activities:");
+        this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
+        this.getLogger().log(Level.INFO, "Registering listeners...");
+        PluginManager pluginManager = this.getServer().getPluginManager();
+        pluginManager.registerEvents(new BlockBreakListener(this), this);
+    }
+
+    public Economy getEconomy() {
+        return this.economy;
+    }
+
+    public RewardableActivityRepository getRepository() {
+        return this.repository;
     }
 
     private Economy setupEconomy() {

@@ -13,3 +13,8 @@ block:
         maximum-economy: 8
         commands:
         - "say {player} broke a stone! (VIP)"
+    grass_block:
+      default:
+        chance: 100.0
+        commands:
+        - "say {player} broke a grass block! (default)"

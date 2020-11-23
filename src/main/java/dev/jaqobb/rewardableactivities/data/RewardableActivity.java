@@ -26,6 +26,7 @@ package dev.jaqobb.rewardableactivities.data;
 
 import java.util.Collections;
 import java.util.Map;
+import org.bukkit.entity.Player;
 
 public final class RewardableActivity {
 
@@ -46,5 +47,15 @@ public final class RewardableActivity {
 
     public Map<String, RewardableActivityReward> getRewards() {
         return Collections.unmodifiableMap(this.rewards);
+    }
+
+    public RewardableActivityReward getReward(final Player player) {
+        String groupToUse = "default";
+        for (String group : this.rewards.keySet()) {
+            if (player.hasPermission("rewardableactivities.group." + group)) {
+                groupToUse = group;
+            }
+        }
+        return this.rewards.get(groupToUse);
     }
 }

@@ -16,6 +16,7 @@ bukkit {
     name = "RewardableActivities"
     main = "dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin"
     version = project.version as String
+    apiVersion = "1.16"
     softDepend = listOf("Vault")
     description = project.description
     author = "jaqobb"
