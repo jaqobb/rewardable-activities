@@ -1,6 +1,7 @@
 plugins {
     java
     id("net.minecrell.plugin-yml.bukkit") version "0.3.0"
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 group = "dev.jaqobb"
@@ -21,6 +22,26 @@ bukkit {
     description = project.description
     author = "jaqobb"
     website = "https://jaqobb.dev"
+}
+
+tasks {
+    shadowJar {
+        exclude("com/cryptomorin/xseries/messages/*")
+        exclude("com/cryptomorin/xseries/particles/*")
+        exclude("com/cryptomorin/xseries/NMSExtras*")
+        exclude("com/cryptomorin/xseries/NoteBlockMusic*")
+        exclude("com/cryptomorin/xseries/ReflectionUtils*")
+        exclude("com/cryptomorin/xseries/SkullCacheListener*")
+        exclude("com/cryptomorin/xseries/SkullUtils*")
+        exclude("com/cryptomorin/xseries/XBiome*")
+        exclude("com/cryptomorin/xseries/XBlock*")
+        exclude("com/cryptomorin/xseries/XEnchantment*")
+        exclude("com/cryptomorin/xseries/XEntity*")
+        exclude("com/cryptomorin/xseries/XItemStack*")
+        exclude("com/cryptomorin/xseries/XPotion*")
+        exclude("com/cryptomorin/xseries/XSound*")
+        relocate("com.cryptomorin.xseries", "dev.jaqobb.rewardableactivities.library.com.cryptomorin.xseries")
+    }
 }
 
 repositories {
@@ -45,4 +66,5 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
+    implementation("com.github.cryptomorin:XSeries:7.6.0.0.1")
 }

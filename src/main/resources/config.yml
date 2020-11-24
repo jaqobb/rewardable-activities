@@ -35,6 +35,13 @@ block:
         maximum-economy: 8.0
         commands:
         - "say {player} broke a stone! (VIP)"
+      # Additional reward group.
+      mvip:
+        chance: 75.0
+        minimum-economy: 0.0
+        maximum-economy: 16.0
+        commands:
+        - "say {player} broke a stone! (MVP)"
     grass_block:
       default:
         chance: 100.0

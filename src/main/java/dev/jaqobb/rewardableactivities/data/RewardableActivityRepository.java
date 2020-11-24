@@ -24,6 +24,7 @@
 
 package dev.jaqobb.rewardableactivities.data;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,17 +33,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 public final class RewardableActivityRepository {
 
     private final RewardableActivitiesPlugin plugin;
-    private final Map<Material, RewardableActivity> blockBreakRewardableActivities;
+    private final Map<XMaterial, RewardableActivity> blockBreakRewardableActivities;
 
     public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
-        this.blockBreakRewardableActivities = new EnumMap<>(Material.class);
+        this.blockBreakRewardableActivities = new EnumMap<>(XMaterial.class);
     }
 
     public void loadAllRewardableActivities() {
@@ -51,7 +51,7 @@ public final class RewardableActivityRepository {
 
     public void loadBlockBreakRewardableActivities() {
         this.blockBreakRewardableActivities.clear();
-        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialName -> Material.getMaterial(materialName.toUpperCase())));
+        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialName -> XMaterial.matchXMaterial(materialName.toUpperCase()).orElse(null)));
     }
 
     private <T> Map<T, RewardableActivity> loadRewardableActivities(
@@ -80,7 +80,7 @@ public final class RewardableActivityRepository {
         return Collections.unmodifiableCollection(this.blockBreakRewardableActivities.values());
     }
 
-    public RewardableActivity getBlockBreakRewardableActivity(final Material material) {
+    public RewardableActivity getBlockBreakRewardableActivity(final XMaterial material) {
         return this.blockBreakRewardableActivities.get(material);
     }
 }
