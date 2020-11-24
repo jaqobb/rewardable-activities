@@ -3,7 +3,7 @@
 
 Rewardable Activities is a Spigot plugin that rewards players when they do certain activities.
 
-Click [here]() to get to the project's SpigotMC page.
+Click [here](https://www.spigotmc.org/resources/rewardable-activities.86090/) to get to the project's SpigotMC page.
 
 ### Features
 
