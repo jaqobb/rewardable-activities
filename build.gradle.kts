@@ -33,7 +33,6 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots/") {
         content {
             includeGroup("net.md-5")
-
         }
     }
     maven("http://nexus.hc.to/content/repositories/pub_releases/") {
