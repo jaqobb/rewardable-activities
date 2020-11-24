@@ -14,9 +14,9 @@ Rewardable Activities supports:
 * [ ] Rewarding players whey they breed an entity
 * [ ] Rewarding players whey they kill an entity
 
-### Showcase
-
 ### Usage
+
+I don't think explaining usage is necessary, everything is documented in the default configuration file. However, feel free to create an issue if you need help with anything.
 
 ### Requirements
 
