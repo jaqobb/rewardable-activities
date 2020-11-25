@@ -44,12 +44,17 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     private RewardableActivityRepository repository;
 
     @Override
+    public void onLoad() {
+        this.saveDefaultConfig();
+        this.reloadConfig();
+    }
+
+    @Override
     public void onEnable() {
         this.getLogger().log(Level.INFO, "Starting metrics...");
         this.metrics = new Metrics(this, 9499);
         this.getLogger().log(Level.INFO, "Starting updater...");
         this.updater = new Updater(this, 86090);
-        this.saveDefaultConfig();
         this.economy = this.setupEconomy();
         if (this.economy != null) {
             this.getLogger().log(Level.INFO, "Economy has been successfully setup.");
@@ -57,15 +62,23 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         } else {
             this.getLogger().log(Level.INFO, "Could not find Vault or economy plugin, economy rewards will not be supported.");
         }
-        this.getLogger().log(Level.INFO, "Loading rewardable activities...");
-        this.repository = new RewardableActivityRepository(this);
-        this.repository.loadAllRewardableActivities();
-        this.getLogger().log(Level.INFO, "Loaded rewardable activities:");
-        this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
         this.getLogger().log(Level.INFO, "Registering listeners...");
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerJoinListener(this), this);
         pluginManager.registerEvents(new BlockBreakListener(this), this);
+    }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        this.getLogger().log(Level.INFO, "Loading configuration...");
+        this.getLogger().log(Level.INFO, "Loading rewardable activities...");
+        if (this.repository == null) {
+            this.repository = new RewardableActivityRepository(this);
+        }
+        this.repository.loadAllRewardableActivities();
+        this.getLogger().log(Level.INFO, "Loaded rewardable activities:");
+        this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
     }
 
     public String getPrefix() {
