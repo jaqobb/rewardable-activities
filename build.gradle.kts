@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.jaqobb"
-version = "1.0.0"
+version = "1.0.1"
 description = "Spigot plugin that rewards players when they do certain activities"
 
 java {
@@ -41,6 +41,7 @@ tasks {
         exclude("com/cryptomorin/xseries/XPotion*")
         exclude("com/cryptomorin/xseries/XSound*")
         relocate("com.cryptomorin.xseries", "dev.jaqobb.rewardableactivities.library.com.cryptomorin.xseries")
+        relocate("org.bstats.bukkit", "dev.jaqobb.rewardableactivities.metrics")
     }
 }
 
@@ -61,10 +62,16 @@ repositories {
             includeGroup("net.milkbowl.vault")
         }
     }
+    maven("https://repo.codemc.org/repository/maven-public/") {
+        content {
+            includeGroup("org.bstats")
+        }
+    }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
+    implementation("org.bstats:bstats-bukkit:1.7")
     implementation("com.github.cryptomorin:XSeries:7.6.0.0.1")
 }

@@ -28,17 +28,21 @@ import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
 import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
 import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RewardableActivitiesPlugin extends JavaPlugin {
 
+    private Metrics metrics;
     private Economy economy;
     private RewardableActivityRepository repository;
 
     @Override
     public void onEnable() {
+        this.getLogger().log(Level.INFO, "Starting metrics...");
+        this.metrics = new Metrics(this, 9499);
         this.saveDefaultConfig();
         this.economy = this.setupEconomy();
         if (this.economy != null) {
@@ -55,6 +59,10 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, "Registering listeners...");
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new BlockBreakListener(this), this);
+    }
+
+    public Metrics getMetrics() {
+        return this.metrics;
     }
 
     public Economy getEconomy() {
