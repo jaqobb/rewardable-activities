@@ -26,7 +26,10 @@ package dev.jaqobb.rewardableactivities;
 
 import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
 import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
+import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
+import dev.jaqobb.rewardableactivities.updater.Updater;
 import java.util.logging.Level;
+import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginManager;
@@ -36,6 +39,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class RewardableActivitiesPlugin extends JavaPlugin {
 
     private Metrics metrics;
+    private Updater updater;
     private Economy economy;
     private RewardableActivityRepository repository;
 
@@ -43,6 +47,8 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     public void onEnable() {
         this.getLogger().log(Level.INFO, "Starting metrics...");
         this.metrics = new Metrics(this, 9499);
+        this.getLogger().log(Level.INFO, "Starting updater...");
+        this.updater = new Updater(this, 86090);
         this.saveDefaultConfig();
         this.economy = this.setupEconomy();
         if (this.economy != null) {
@@ -58,11 +64,20 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
         this.getLogger().log(Level.INFO, "Registering listeners...");
         PluginManager pluginManager = this.getServer().getPluginManager();
+        pluginManager.registerEvents(new PlayerJoinListener(this), this);
         pluginManager.registerEvents(new BlockBreakListener(this), this);
+    }
+
+    public String getPrefix() {
+        return ChatColor.GRAY + "Rewardable Activities" + ChatColor.GOLD + ChatColor.BOLD + " > ";
     }
 
     public Metrics getMetrics() {
         return this.metrics;
+    }
+
+    public Updater getUpdater() {
+        return this.updater;
     }
 
     public Economy getEconomy() {

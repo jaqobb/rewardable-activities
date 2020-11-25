@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.jaqobb"
-version = "1.0.1"
+version = "1.0.2"
 description = "Spigot plugin that rewards players when they do certain activities"
 
 java {
@@ -17,7 +17,7 @@ bukkit {
     name = "RewardableActivities"
     main = "dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin"
     version = project.version as String
-    apiVersion = "1.16"
+    apiVersion = "1.13"
     softDepend = listOf("Vault")
     description = project.description
     author = "jaqobb"
