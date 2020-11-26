@@ -33,21 +33,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
-public final class BlockBreakListener implements Listener {
+public final class BlockPlaceListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockBreakListener(final RewardableActivitiesPlugin plugin) {
+    public BlockPlaceListener(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockBreak(final BlockBreakEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockBreakRewardableActivity(XMaterial.matchXMaterial(block.getType()));
+        RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockPlaceRewardableActivity(XMaterial.matchXMaterial(block.getType()));
         if (rewardableActivity == null) {
             return;
         }

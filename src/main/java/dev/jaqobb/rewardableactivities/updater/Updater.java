@@ -33,8 +33,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import javax.net.ssl.HttpsURLConnection;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public final class Updater implements Runnable {
+public final class Updater extends BukkitRunnable {
 
     private final RewardableActivitiesPlugin plugin;
     private final int pluginId;

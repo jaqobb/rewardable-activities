@@ -39,19 +39,27 @@ public final class RewardableActivityRepository {
 
     private final RewardableActivitiesPlugin plugin;
     private final Map<XMaterial, RewardableActivity> blockBreakRewardableActivities;
+    private final Map<XMaterial, RewardableActivity> blockPlaceRewardableActivities;
 
     public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
         this.blockBreakRewardableActivities = new EnumMap<>(XMaterial.class);
+        this.blockPlaceRewardableActivities = new EnumMap<>(XMaterial.class);
     }
 
     public void loadAllRewardableActivities() {
         this.loadBlockBreakRewardableActivities();
+        this.loadBlockPlaceRewardableActivities();
     }
 
     public void loadBlockBreakRewardableActivities() {
         this.blockBreakRewardableActivities.clear();
         this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialName -> XMaterial.matchXMaterial(materialName.toUpperCase()).orElse(null)));
+    }
+
+    public void loadBlockPlaceRewardableActivities() {
+        this.blockPlaceRewardableActivities.clear();
+        this.blockPlaceRewardableActivities.putAll(this.loadRewardableActivities("block.place", materialName -> XMaterial.matchXMaterial(materialName.toUpperCase()).orElse(null)));
     }
 
     private <T> Map<T, RewardableActivity> loadRewardableActivities(
@@ -82,5 +90,13 @@ public final class RewardableActivityRepository {
 
     public RewardableActivity getBlockBreakRewardableActivity(final XMaterial material) {
         return this.blockBreakRewardableActivities.get(material);
+    }
+
+    public Collection<RewardableActivity> getBlockPlaceRewardableActivities() {
+        return Collections.unmodifiableCollection(this.blockPlaceRewardableActivities.values());
+    }
+
+    public RewardableActivity getBlockPlaceRewardableActivity(final XMaterial material) {
+        return this.blockPlaceRewardableActivities.get(material);
     }
 }

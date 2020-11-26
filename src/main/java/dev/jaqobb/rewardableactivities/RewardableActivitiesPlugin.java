@@ -26,6 +26,7 @@ package dev.jaqobb.rewardableactivities;
 
 import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
 import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
+import dev.jaqobb.rewardableactivities.listener.block.BlockPlaceListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
 import java.util.logging.Level;
@@ -55,6 +56,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.metrics = new Metrics(this, 9499);
         this.getLogger().log(Level.INFO, "Starting updater...");
         this.updater = new Updater(this, 86090);
+        this.updater.runTaskTimerAsynchronously(this, 0L, 20L * 60L * 30L);
         this.economy = this.setupEconomy();
         if (this.economy != null) {
             this.getLogger().log(Level.INFO, "Economy has been successfully setup.");
@@ -66,6 +68,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerJoinListener(this), this);
         pluginManager.registerEvents(new BlockBreakListener(this), this);
+        pluginManager.registerEvents(new BlockPlaceListener(this), this);
     }
 
     @Override
@@ -79,6 +82,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.repository.loadAllRewardableActivities();
         this.getLogger().log(Level.INFO, "Loaded rewardable activities:");
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
+        this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceRewardableActivities().size());
     }
 
     public String getPrefix() {

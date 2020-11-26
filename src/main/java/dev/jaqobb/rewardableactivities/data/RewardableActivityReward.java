@@ -90,6 +90,19 @@ public final class RewardableActivityReward {
     }
 
     public void executeCommands(final Player player) {
-        this.commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{player}", player.getName())));
+        this.commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{player}", player.getName()).replace("{group}", this.group)));
+    }
+
+    public void reward(
+        final Economy economy,
+        final Player player
+    ) {
+        if (!this.testChance()) {
+            return;
+        }
+        if (economy != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy > this.maximumEconomy) {
+            this.depositEconomy(economy, player, this.getRandomEconomy());
+        }
+        this.executeCommands(player);
     }
 }
