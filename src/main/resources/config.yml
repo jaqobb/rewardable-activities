@@ -51,4 +51,9 @@ block:
   # Block place rewardable activities section.
   # Block place rewardable activities have the same exact settings as the block break ones.
   # Block place rewardable activities trigger on block place.
-  place: 1.0
+  place:
+    diamond_block:
+      default:
+        chance: 100.0
+        commands:
+        - "say {player} placed a diamond block! ({group_name})"
