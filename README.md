@@ -10,9 +10,9 @@ Click [here](https://www.spigotmc.org/resources/rewardable-activities.86090/) to
 Rewardable Activities supports:
 * [x] Rewarding players when they break a block - since 1.0.0
 * [x] Rewarding players whey they place a block - since 1.1.0
-* [ ] Block ownership check (not rewarding players when they break a block they placed themselves)
 * [ ] Rewarding players whey they breed an entity
 * [ ] Rewarding players whey they kill an entity
+* [ ] Block ownership check (not rewarding players when they break a block they placed themselves)
 * [ ] Entity ownership check (not rewarding players when they kill an entity they bred themselves)
 
 ### Usage
