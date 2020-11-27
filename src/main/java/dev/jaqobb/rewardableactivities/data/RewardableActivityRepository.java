@@ -68,6 +68,9 @@ public final class RewardableActivityRepository {
     ) {
         Map<T, RewardableActivity> rewardableActivities = new HashMap<>(16);
         ConfigurationSection mainSection = this.plugin.getConfig().getConfigurationSection(path);
+        if (mainSection == null) {
+            return rewardableActivities;
+        }
         for (String key : mainSection.getKeys(false)) {
             Map<String, RewardableActivityReward> rewards = new LinkedHashMap<>(16);
             ConfigurationSection rewardsSection = mainSection.getConfigurationSection(key);

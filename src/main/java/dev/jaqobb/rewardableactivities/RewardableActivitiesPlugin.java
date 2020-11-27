@@ -30,7 +30,6 @@ import dev.jaqobb.rewardableactivities.listener.block.BlockPlaceListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
 import java.util.logging.Level;
-import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginManager;
@@ -83,10 +82,6 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, "Loaded rewardable activities:");
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceRewardableActivities().size());
-    }
-
-    public String getPrefix() {
-        return ChatColor.GRAY + "Rewardable Activities" + ChatColor.GOLD + ChatColor.BOLD + " > ";
     }
 
     public Metrics getMetrics() {

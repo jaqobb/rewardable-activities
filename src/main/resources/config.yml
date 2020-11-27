@@ -1,7 +1,7 @@
-# Block-related settings and rewardable activities.
+# Block related settings and rewardable activities.
 block:
-  # Block break rewardable activities.
-  # Triggers on block break.
+  # Block break rewardable activities section.
+  # Block break rewardable activities trigger on block break.
   break:
     # Block type.
     stone:
@@ -27,7 +27,6 @@ block:
         # Commands that will be executed.
         # Available placeholders:
         # {player} -> player name
-        # {group} -> group name
         commands:
         - "say {player} broke a stone! ({group_name})"
       # Additional reward group.
@@ -49,12 +48,7 @@ block:
         chance: 100.0
         commands:
         - "say {player} broke a grass block! ({group_name})"
-  # Block place rewardable activities.
-  # The same settings as in the block break rewardable activities.
-  # Triggers on block place.
-  place:
-    diamond_block:
-      default:
-        chance: 100.0
-        commands:
-        - "say {player} placed a diamond block! ({group_name})"
+  # Block place rewardable activities section.
+  # Block place rewardable activities have the same exact settings as the block break ones.
+  # Block place rewardable activities trigger on block place.
+  place: 1.0

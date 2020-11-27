@@ -24,6 +24,7 @@
 
 package dev.jaqobb.rewardableactivities.updater;
 
+import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -67,7 +68,7 @@ public final class Updater extends BukkitRunnable {
     }
 
     public String getUpdateMessage() {
-        String message = this.plugin.getPrefix();
+        String message = RewardableActivitiesConstants.PREFIX;
         if (this.latestVersion == null || this.versionDifference == null) {
             message += ChatColor.RED + "Could not retrieve the latest version data. Make sure that you have internet access.";
         } else if (this.versionDifference > 0) {
