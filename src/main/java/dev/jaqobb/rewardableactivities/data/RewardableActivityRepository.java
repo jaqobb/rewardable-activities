@@ -34,32 +34,42 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 
 public final class RewardableActivityRepository {
 
     private final RewardableActivitiesPlugin plugin;
     private final Map<XMaterial, RewardableActivity> blockBreakRewardableActivities;
     private final Map<XMaterial, RewardableActivity> blockPlaceRewardableActivities;
+    private final Map<EntityType, RewardableActivity> entityKillRewardableActivities;
 
     public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
         this.blockBreakRewardableActivities = new EnumMap<>(XMaterial.class);
         this.blockPlaceRewardableActivities = new EnumMap<>(XMaterial.class);
+        this.entityKillRewardableActivities = new EnumMap<>(EntityType.class);
     }
 
     public void loadAllRewardableActivities() {
         this.loadBlockBreakRewardableActivities();
         this.loadBlockPlaceRewardableActivities();
+        this.loadEntityKillRewardableActivities();
     }
 
     public void loadBlockBreakRewardableActivities() {
         this.blockBreakRewardableActivities.clear();
-        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialName -> XMaterial.matchXMaterial(materialName.toUpperCase()).orElse(null)));
+        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialType -> XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null)));
     }
 
     public void loadBlockPlaceRewardableActivities() {
         this.blockPlaceRewardableActivities.clear();
-        this.blockPlaceRewardableActivities.putAll(this.loadRewardableActivities("block.place", materialName -> XMaterial.matchXMaterial(materialName.toUpperCase()).orElse(null)));
+        this.blockPlaceRewardableActivities.putAll(this.loadRewardableActivities("block.place", materialType -> XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null)));
+    }
+
+    @SuppressWarnings("deprecation")
+    public void loadEntityKillRewardableActivities() {
+        this.entityKillRewardableActivities.clear();
+        this.entityKillRewardableActivities.putAll(this.loadRewardableActivities("entity.kill", entityType -> EntityType.fromName(entityType.toLowerCase())));
     }
 
     private <T> Map<T, RewardableActivity> loadRewardableActivities(
@@ -101,5 +111,13 @@ public final class RewardableActivityRepository {
 
     public RewardableActivity getBlockPlaceRewardableActivity(final XMaterial material) {
         return this.blockPlaceRewardableActivities.get(material);
+    }
+
+    public Collection<RewardableActivity> getEntityKillRewardableActivities() {
+        return Collections.unmodifiableCollection(this.entityKillRewardableActivities.values());
+    }
+
+    public RewardableActivity getEntityKillRewardableActivity(final EntityType entityType) {
+        return this.entityKillRewardableActivities.get(entityType);
     }
 }
