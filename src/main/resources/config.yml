@@ -108,3 +108,12 @@ entity:
         chance: 100.0
         commands:
         - "say {player} killed a pig! ({group})"
+  # Entity breed rewardable activities section.
+  # Entity breed rewardable activities have the same exact settings as the entity kill ones.
+  # Entity breed rewardable activities trigger on entity kill.
+  breed:
+    pig:
+      default:
+        chance: 100.0
+        commands:
+        - "say {player} bred a pig! ({group})"

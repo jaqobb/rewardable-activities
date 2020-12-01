@@ -27,6 +27,7 @@ package dev.jaqobb.rewardableactivities;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
 import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
 import dev.jaqobb.rewardableactivities.listener.block.BlockPlaceListener;
+import dev.jaqobb.rewardableactivities.listener.entity.EntityBreedListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityDamageByEntityListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
@@ -70,6 +71,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         pluginManager.registerEvents(new BlockBreakListener(this), this);
         pluginManager.registerEvents(new BlockPlaceListener(this), this);
         pluginManager.registerEvents(new EntityDamageByEntityListener(this), this);
+        pluginManager.registerEvents(new EntityBreedListener(this), this);
     }
 
     @Override
@@ -85,6 +87,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Entity kill: " + this.repository.getEntityKillRewardableActivities().size());
+        this.getLogger().log(Level.INFO, " * Entity breed: " + this.repository.getEntityBreedRewardableActivities().size());
     }
 
     public Metrics getMetrics() {

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.jaqobb"
-version = "1.2.0"
+version = "1.3.0"
 description = "Spigot plugin that rewards players when they do certain activities"
 
 java {

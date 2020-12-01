@@ -42,18 +42,21 @@ public final class RewardableActivityRepository {
     private final Map<XMaterial, RewardableActivity> blockBreakRewardableActivities;
     private final Map<XMaterial, RewardableActivity> blockPlaceRewardableActivities;
     private final Map<EntityType, RewardableActivity> entityKillRewardableActivities;
+    private final Map<EntityType, RewardableActivity> entityBreedRewardableActivities;
 
     public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
         this.blockBreakRewardableActivities = new EnumMap<>(XMaterial.class);
         this.blockPlaceRewardableActivities = new EnumMap<>(XMaterial.class);
         this.entityKillRewardableActivities = new EnumMap<>(EntityType.class);
+        this.entityBreedRewardableActivities = new EnumMap<>(EntityType.class);
     }
 
     public void loadAllRewardableActivities() {
         this.loadBlockBreakRewardableActivities();
         this.loadBlockPlaceRewardableActivities();
         this.loadEntityKillRewardableActivities();
+        this.loadEntityBreedRewardableActivities();
     }
 
     public void loadBlockBreakRewardableActivities() {
@@ -70,6 +73,12 @@ public final class RewardableActivityRepository {
     public void loadEntityKillRewardableActivities() {
         this.entityKillRewardableActivities.clear();
         this.entityKillRewardableActivities.putAll(this.loadRewardableActivities("entity.kill", entityType -> EntityType.fromName(entityType.toLowerCase())));
+    }
+
+    @SuppressWarnings("deprecation")
+    public void loadEntityBreedRewardableActivities() {
+        this.entityBreedRewardableActivities.clear();
+        this.entityBreedRewardableActivities.putAll(this.loadRewardableActivities("entity.breed", entityType -> EntityType.fromName(entityType.toLowerCase())));
     }
 
     private <T> Map<T, RewardableActivity> loadRewardableActivities(
@@ -119,5 +128,13 @@ public final class RewardableActivityRepository {
 
     public RewardableActivity getEntityKillRewardableActivity(final EntityType entityType) {
         return this.entityKillRewardableActivities.get(entityType);
+    }
+
+    public Collection<RewardableActivity> getEntityBreedRewardableActivities() {
+        return Collections.unmodifiableCollection(this.entityBreedRewardableActivities.values());
+    }
+
+    public RewardableActivity getEntityBreedRewardableActivity(final EntityType entityType) {
+        return this.entityBreedRewardableActivities.get(entityType);
     }
 }
