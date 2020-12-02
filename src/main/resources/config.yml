@@ -60,6 +60,10 @@ block:
 
 # Entity related settings and rewardable activities.
 entity:
+  # Whether ownership of the entity should be checked.
+  # If set to true, killing an entity that was bred by the same player
+  # will result in no rewards given to that player.
+  ownership-check: true
   # Entity kill rewardable activities section.
   # Entity kill rewardable activities trigger on entity kill.
   kill:

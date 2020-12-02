@@ -44,6 +44,7 @@ public final class EntityBreedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityBreed(final EntityBreedEvent event) {
+        Entity child = event.getEntity();
         Entity breeder = event.getBreeder();
         if (breeder == null) {
             return;
@@ -52,7 +53,10 @@ public final class EntityBreedListener implements Listener {
             return;
         }
         Player breederPlayer = (Player) breeder;
-        RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityBreedRewardableActivity(event.getEntity().getType());
+        if (this.plugin.isEntityOwnershipCheckEnabled()) {
+            this.plugin.setEntityOwner(child, breederPlayer);
+        }
+        RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityBreedRewardableActivity(child.getType());
         if (rewardableActivity == null) {
             return;
         }

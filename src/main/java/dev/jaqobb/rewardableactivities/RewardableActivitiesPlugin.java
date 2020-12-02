@@ -31,15 +31,22 @@ import dev.jaqobb.rewardableactivities.listener.entity.EntityBreedListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityDamageByEntityListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
+import java.util.UUID;
 import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RewardableActivitiesPlugin extends JavaPlugin {
 
+    private boolean blockOwnershipCheckEnabled;
+    private boolean entityOwnershipCheckEnabled;
     private Metrics metrics;
     private Updater updater;
     private Economy economy;
@@ -78,6 +85,8 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     public void reloadConfig() {
         super.reloadConfig();
         this.getLogger().log(Level.INFO, "Loading configuration...");
+        this.blockOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check", true);
+        this.entityOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check", true);
         this.getLogger().log(Level.INFO, "Loading rewardable activities...");
         if (this.repository == null) {
             this.repository = new RewardableActivityRepository(this);
@@ -88,6 +97,14 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Entity kill: " + this.repository.getEntityKillRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Entity breed: " + this.repository.getEntityBreedRewardableActivities().size());
+    }
+
+    public boolean isBlockOwnershipCheckEnabled() {
+        return this.blockOwnershipCheckEnabled;
+    }
+
+    public boolean isEntityOwnershipCheckEnabled() {
+        return this.entityOwnershipCheckEnabled;
     }
 
     public Metrics getMetrics() {
@@ -104,6 +121,42 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
 
     public RewardableActivityRepository getRepository() {
         return this.repository;
+    }
+
+    public UUID getBlockOwner(final Block block) {
+        if (!block.hasMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY)) {
+            return null;
+        }
+        return (UUID) block.getMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY).get(0).value();
+    }
+
+    public void setBlockOwner(
+        final Block block,
+        final Player player
+    ) {
+        block.setMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY, new FixedMetadataValue(this, player.getUniqueId()));
+    }
+
+    public void removeBlockOwner(final Block block) {
+        block.removeMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY, this);
+    }
+
+    public UUID getEntityOwner(final Entity entity) {
+        if (!entity.hasMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY)) {
+            return null;
+        }
+        return (UUID) entity.getMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY).get(0).value();
+    }
+
+    public void setEntityOwner(
+        final Entity entity,
+        final Player player
+    ) {
+        entity.setMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY, new FixedMetadataValue(this, player.getUniqueId()));
+    }
+
+    public void removeEntityOwner(final Entity entity) {
+        entity.removeMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY, this);
     }
 
     private Economy setupEconomy() {

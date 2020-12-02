@@ -30,6 +30,9 @@ public final class RewardableActivitiesConstants {
 
     public static final String PREFIX = ChatColor.GRAY + "Rewardable Activities" + ChatColor.GOLD + ChatColor.BOLD + " > ";
 
+    public static final String BLOCK_OWNER_KEY = "rewardableactivities:block_owner";
+    public static final String ENTITY_OWNER_KEY = "rewardableactivities:entity_owner";
+
     private RewardableActivitiesConstants() {
         throw new UnsupportedOperationException("Cannot create instance of this class");
     }
