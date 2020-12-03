@@ -1,5 +1,9 @@
 # Block related settings and rewardable activities.
 block:
+  # Whether ownership of the block should be checked.
+  # If set to true, breaking a entity that was placed by the same player
+  # will result in no rewards given to that player.
+  ownership-check: true
   # Block break rewardable activities section.
   # Block break rewardable activities trigger on block break.
   break:

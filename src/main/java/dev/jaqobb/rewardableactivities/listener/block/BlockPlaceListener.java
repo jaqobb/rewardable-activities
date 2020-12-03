@@ -47,6 +47,9 @@ public final class BlockPlaceListener implements Listener {
     public void onBlockPlace(final BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
+        if (this.plugin.isBlockOwnershipCheckEnabled()) {
+            this.plugin.setBlockOwner(block, player);
+        }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockPlaceRewardableActivity(XMaterial.matchXMaterial(block.getType()));
         if (rewardableActivity == null) {
             return;

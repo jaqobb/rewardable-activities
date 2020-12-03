@@ -28,6 +28,7 @@ import com.cryptomorin.xseries.XMaterial;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import dev.jaqobb.rewardableactivities.data.RewardableActivity;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
+import java.util.UUID;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,13 @@ public final class BlockBreakListener implements Listener {
     public void onBlockBreak(final BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
+        if (this.plugin.isBlockOwnershipCheckEnabled()) {
+            UUID blockOwner = this.plugin.getBlockOwner(block);
+            if (blockOwner != null && blockOwner.equals(player.getUniqueId())) {
+                this.plugin.removeBlockOwner(block);
+                return;
+            }
+        }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockBreakRewardableActivity(XMaterial.matchXMaterial(block.getType()));
         if (rewardableActivity == null) {
             return;
