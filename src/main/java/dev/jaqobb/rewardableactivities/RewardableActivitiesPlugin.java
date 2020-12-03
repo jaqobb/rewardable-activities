@@ -29,15 +29,14 @@ import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
 import dev.jaqobb.rewardableactivities.listener.block.BlockPlaceListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityBreedListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityDamageByEntityListener;
+import dev.jaqobb.rewardableactivities.listener.entity.EntityExplodeListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
-import java.util.UUID;
 import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -79,6 +78,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         pluginManager.registerEvents(new BlockPlaceListener(this), this);
         pluginManager.registerEvents(new EntityDamageByEntityListener(this), this);
         pluginManager.registerEvents(new EntityBreedListener(this), this);
+        pluginManager.registerEvents(new EntityExplodeListener(this), this);
     }
 
     @Override
@@ -123,40 +123,28 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         return this.repository;
     }
 
-    public UUID getBlockOwner(final Block block) {
-        if (!block.hasMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY)) {
-            return null;
-        }
-        return (UUID) block.getMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY).get(0).value();
+    public boolean isBlockPlacedByPlayer(final Block block) {
+        return block.hasMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
     }
 
-    public void setBlockOwner(
-        final Block block,
-        final Player player
-    ) {
-        block.setMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY, new FixedMetadataValue(this, player.getUniqueId()));
+    public void setBlockPlacedByPlayer(final Block block) {
+        block.setMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
     }
 
-    public void removeBlockOwner(final Block block) {
-        block.removeMetadata(RewardableActivitiesConstants.BLOCK_OWNER_KEY, this);
+    public void unsetBlockPlacedByPlayer(final Block block) {
+        block.removeMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, this);
     }
 
-    public UUID getEntityOwner(final Entity entity) {
-        if (!entity.hasMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY)) {
-            return null;
-        }
-        return (UUID) entity.getMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY).get(0).value();
+    public boolean isEntityBredByPlayer(final Entity entity) {
+        return entity.hasMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY);
     }
 
-    public void setEntityOwner(
-        final Entity entity,
-        final Player player
-    ) {
-        entity.setMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY, new FixedMetadataValue(this, player.getUniqueId()));
+    public void setEntityBredByPlayer(final Entity entity) {
+        entity.setMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
     }
 
-    public void removeEntityOwner(final Entity entity) {
-        entity.removeMetadata(RewardableActivitiesConstants.ENTITY_OWNER_KEY, this);
+    public void unsetEntityBredByPlayer(final Entity entity) {
+        entity.removeMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, this);
     }
 
     private Economy setupEconomy() {

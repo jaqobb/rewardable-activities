@@ -27,7 +27,6 @@ package dev.jaqobb.rewardableactivities.listener.entity;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import dev.jaqobb.rewardableactivities.data.RewardableActivity;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
-import java.util.UUID;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -57,14 +56,11 @@ public final class EntityDamageByEntityListener implements Listener {
             return;
         }
         if (victim.getHealth() - event.getFinalDamage() > 0.0D) {
+            // Entity is most likely to survive this hit.
             return;
         }
-        if (this.plugin.isEntityOwnershipCheckEnabled()) {
-            UUID victimOwner = this.plugin.getEntityOwner(victim);
-            if (victimOwner != null && victimOwner.equals(attacker.getUniqueId())) {
-                this.plugin.removeEntityOwner(victim);
-                return;
-            }
+        if (this.plugin.isEntityOwnershipCheckEnabled() && this.plugin.isEntityBredByPlayer(victim)) {
+            return;
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityKillRewardableActivity(victim.getType());
         if (rewardableActivity == null) {

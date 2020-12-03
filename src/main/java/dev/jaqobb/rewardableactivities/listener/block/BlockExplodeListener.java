@@ -24,39 +24,32 @@
 
 package dev.jaqobb.rewardableactivities.listener.block;
 
-import com.cryptomorin.xseries.XMaterial;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
-import dev.jaqobb.rewardableactivities.data.RewardableActivity;
-import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
+import java.util.List;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 
-public final class BlockPlaceListener implements Listener {
+public final class BlockExplodeListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockPlaceListener(final RewardableActivitiesPlugin plugin) {
+    public BlockExplodeListener(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockPlace(final BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getBlock();
-        if (this.plugin.isBlockOwnershipCheckEnabled()) {
-            this.plugin.setBlockPlacedByPlayer(block);
-        }
-        RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockPlaceRewardableActivity(XMaterial.matchXMaterial(block.getType()));
-        if (rewardableActivity == null) {
+    public void onBlockExplode(final BlockExplodeEvent event) {
+        if (!this.plugin.isBlockOwnershipCheckEnabled()) {
             return;
         }
-        RewardableActivityReward rewardableActivityReward = rewardableActivity.getReward(player);
-        if (rewardableActivityReward != null) {
-            rewardableActivityReward.reward(this.plugin.getEconomy(), player);
+        List<Block> blocks = event.blockList();
+        for (Block block : blocks) {
+            if (this.plugin.isBlockPlacedByPlayer(block)) {
+                this.plugin.unsetBlockPlacedByPlayer(block);
+            }
         }
     }
 }
