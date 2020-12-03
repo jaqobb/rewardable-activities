@@ -12,8 +12,8 @@ Rewardable Activities supports:
 * [x] Rewarding players whey they place a block - since 1.1.0
 * [x] Rewarding players whey they kill an entity - since 1.2.0
 * [x] Rewarding players whey they breed an entity - since 1.3.0
-* [ ] Block ownership check (not rewarding players when they break a block they placed themselves)
-* [x] Entity ownership check (not rewarding players when they kill an entity they bred themselves) - since 1.4.0
+* [x] Block ownership check (not rewarding players when they break a block that was placed by a player) - since 1.5.0
+* [x] Entity ownership check (not rewarding players when they kill an entity that was bred by a player) - since 1.4.0
 
 ### Usage
 

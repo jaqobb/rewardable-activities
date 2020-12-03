@@ -26,16 +26,22 @@ package dev.jaqobb.rewardableactivities;
 
 import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
 import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
+import dev.jaqobb.rewardableactivities.listener.block.BlockExplodeListener;
+import dev.jaqobb.rewardableactivities.listener.block.BlockPistonExtendListener;
+import dev.jaqobb.rewardableactivities.listener.block.BlockPistonRetractListener;
 import dev.jaqobb.rewardableactivities.listener.block.BlockPlaceListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityBreedListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityDamageByEntityListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityExplodeListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
@@ -76,6 +82,9 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         pluginManager.registerEvents(new PlayerJoinListener(this), this);
         pluginManager.registerEvents(new BlockBreakListener(this), this);
         pluginManager.registerEvents(new BlockPlaceListener(this), this);
+        pluginManager.registerEvents(new BlockPistonExtendListener(this), this);
+        pluginManager.registerEvents(new BlockPistonRetractListener(this), this);
+        pluginManager.registerEvents(new BlockExplodeListener(this), this);
         pluginManager.registerEvents(new EntityDamageByEntityListener(this), this);
         pluginManager.registerEvents(new EntityBreedListener(this), this);
         pluginManager.registerEvents(new EntityExplodeListener(this), this);
@@ -128,11 +137,15 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     }
 
     public void setBlockPlacedByPlayer(final Block block) {
-        block.setMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
+        if (!block.hasMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
+            block.setMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
+        }
     }
 
     public void unsetBlockPlacedByPlayer(final Block block) {
-        block.removeMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, this);
+        if (block.hasMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
+            block.removeMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, this);
+        }
     }
 
     public boolean isEntityBredByPlayer(final Entity entity) {
@@ -140,11 +153,41 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     }
 
     public void setEntityBredByPlayer(final Entity entity) {
-        entity.setMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
+        if (!entity.hasMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY)) {
+            entity.setMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
+        }
     }
 
     public void unsetEntityBredByPlayer(final Entity entity) {
-        entity.removeMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, this);
+        if (entity.hasMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY)) {
+            entity.removeMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, this);
+        }
+    }
+
+    public void updatePistonBlocks(
+        final BlockFace direction,
+        final List<Block> blocks
+    ) {
+        List<Block> blocksPlacedByPlayer = new ArrayList<>(blocks.size());
+        List<Block> blocksSoonToBePlacedByPlayer = new ArrayList<>(blocks.size());
+        // Verify metadata first.
+        for (Block block : blocks) {
+            if (!blocksPlacedByPlayer.contains(block) && this.isBlockPlacedByPlayer(block)) {
+                blocksPlacedByPlayer.add(block);
+            }
+        }
+        // Update metadata.
+        for (Block block : blocks) {
+            if (!blocksPlacedByPlayer.contains(block)) {
+                continue;
+            }
+            if (!blocksSoonToBePlacedByPlayer.contains(block)) {
+                this.unsetBlockPlacedByPlayer(block);
+            }
+            Block blockSoonToBePlacedByPlayer = block.getRelative(direction);
+            blocksSoonToBePlacedByPlayer.add(blockSoonToBePlacedByPlayer);
+            this.setBlockPlacedByPlayer(blockSoonToBePlacedByPlayer);
+        }
     }
 
     private Economy setupEconomy() {
