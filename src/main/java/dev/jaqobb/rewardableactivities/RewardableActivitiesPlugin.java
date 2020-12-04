@@ -170,13 +170,11 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     ) {
         List<Block> blocksPlacedByPlayer = new ArrayList<>(blocks.size());
         List<Block> blocksSoonToBePlacedByPlayer = new ArrayList<>(blocks.size());
-        // Verify metadata first.
         for (Block block : blocks) {
             if (!blocksPlacedByPlayer.contains(block) && this.isBlockPlacedByPlayer(block)) {
                 blocksPlacedByPlayer.add(block);
             }
         }
-        // Update metadata.
         for (Block block : blocks) {
             if (!blocksPlacedByPlayer.contains(block)) {
                 continue;

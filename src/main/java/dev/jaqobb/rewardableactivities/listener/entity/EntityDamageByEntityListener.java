@@ -56,7 +56,6 @@ public final class EntityDamageByEntityListener implements Listener {
             return;
         }
         if (victim.getHealth() - event.getFinalDamage() > 0.0D) {
-            // Entity is most likely to survive this hit.
             return;
         }
         if (this.plugin.isEntityOwnershipCheckEnabled() && this.plugin.isEntityBredByPlayer(victim)) {
