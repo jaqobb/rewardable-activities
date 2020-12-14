@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import org.bukkit.configuration.ConfigurationSection;
@@ -81,6 +83,7 @@ public final class RewardableActivityRepository {
         this.entityBreedRewardableActivities.putAll(this.loadRewardableActivities("entity.breed", entityType -> EntityType.fromName(entityType.toLowerCase())));
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Map<T, RewardableActivity> loadRewardableActivities(
         final String path,
         final Function<String, T> keyFunction
@@ -91,15 +94,29 @@ public final class RewardableActivityRepository {
             return rewardableActivities;
         }
         for (String key : mainSection.getKeys(false)) {
-            Map<String, RewardableActivityReward> rewards = new LinkedHashMap<>(16);
+            Map<String, List<RewardableActivityReward>> rewards = new LinkedHashMap<>(16);
             ConfigurationSection rewardsSection = mainSection.getConfigurationSection(key);
             for (String group : rewardsSection.getKeys(false)) {
-                ConfigurationSection rewardSection = rewardsSection.getConfigurationSection(group);
-                Number chance = (Number) rewardSection.get("chance");
-                Number minimumEconomy = rewardSection.isSet("minimum-economy") ? (Number) rewardSection.get("minimum-economy") : 0.0D;
-                Number maximumEconomy = rewardSection.isSet("maximum-economy") ? (Number) rewardSection.get("maximum-economy") : 0.0D;
-                Collection<String> commands = rewardSection.getStringList("commands");
-                rewards.put(group, new RewardableActivityReward(group, chance.doubleValue(), minimumEconomy.doubleValue(), maximumEconomy.doubleValue(), commands));
+                if (rewardsSection.isList(group)) {
+                    List<RewardableActivityReward> rewardRewards = new LinkedList<>();
+                    for (Map<?, ?> rewardReward : rewardsSection.getMapList(group)) {
+                        Number chance = (Number) rewardReward.get("chance");
+                        Number minimumEconomy = rewardReward.containsKey("minimum-economy") ? (Number) rewardReward.get("minimum-economy") : 0.0D;
+                        Number maximumEconomy = rewardReward.containsKey("maximum-economy") ? (Number) rewardReward.get("maximum-economy") : 0.0D;
+                        Collection<String> commands = (List<String>) rewardReward.get("commands");
+                        rewardRewards.add(new RewardableActivityReward(group, chance.doubleValue(), minimumEconomy.doubleValue(), maximumEconomy.doubleValue(), commands));
+                    }
+                    rewards.put(group, rewardRewards);
+                } else {
+                    List<RewardableActivityReward> rewardRewards = new LinkedList<>();
+                    ConfigurationSection rewardSection = rewardsSection.getConfigurationSection(group);
+                    Number chance = (Number) rewardSection.get("chance");
+                    Number minimumEconomy = rewardSection.isSet("minimum-economy") ? (Number) rewardSection.get("minimum-economy") : 0.0D;
+                    Number maximumEconomy = rewardSection.isSet("maximum-economy") ? (Number) rewardSection.get("maximum-economy") : 0.0D;
+                    Collection<String> commands = rewardSection.getStringList("commands");
+                    rewardRewards.add(new RewardableActivityReward(group, chance.doubleValue(), minimumEconomy.doubleValue(), maximumEconomy.doubleValue(), commands));
+                    rewards.put(group, rewardRewards);
+                }
             }
             rewardableActivities.put(keyFunction.apply(key), new RewardableActivity(key, rewards));
         }

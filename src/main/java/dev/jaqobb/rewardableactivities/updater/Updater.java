@@ -69,20 +69,25 @@ public final class Updater extends BukkitRunnable {
 
     public String getUpdateMessage() {
         String message = RewardableActivitiesConstants.PREFIX;
-        if (this.latestVersion == null || this.versionDifference == null) {
+        if (this.currentVersion.contains("-SNAPSHOT")) {
+            message += ChatColor.RED + "You are running a development version (" + ChatColor.WHITE + this.currentVersion + ChatColor.RED + "). It is not advised to run development versions on production servers as they are very likely to not work as intended.";
+        } else if (this.latestVersion == null || this.versionDifference == null) {
             message += ChatColor.RED + "Could not retrieve the latest version data. Make sure that you have internet access.";
         } else if (this.versionDifference > 0) {
-            message += ChatColor.WHITE + "You are probably running a development version (" + ChatColor.GRAY + this.currentVersion + ChatColor.WHITE + " > " + ChatColor.GRAY + this.latestVersion + ChatColor.WHITE + "). It is advised to not run development versions on production servers as they are very likely to not work as intended.";
+            message += ChatColor.WHITE + "You are running a future version (" + ChatColor.GRAY + this.currentVersion + ChatColor.WHITE + " > " + ChatColor.GRAY + this.latestVersion + ChatColor.WHITE + "). This version is safe to use but is yet to be officially uploaded or the latest version data is yet to be updated.";
         } else if (this.versionDifference < 0) {
-            message += ChatColor.WHITE + "You are running an outdated version (" + ChatColor.GRAY + this.currentVersion + ChatColor.WHITE + " < " + ChatColor.GRAY + this.latestVersion + ChatColor.WHITE + "). Consider updating the plugin.";
+            message += ChatColor.WHITE + "You are running a past version (" + ChatColor.GRAY + this.currentVersion + ChatColor.WHITE + " < " + ChatColor.GRAY + this.latestVersion + ChatColor.WHITE + "). Updating is recommended to receive new features, bug fixes and more.";
         } else {
-            message += "You are running the latest version (" + ChatColor.GRAY + this.latestVersion + ChatColor.WHITE + "). You have nothing to do.";
+            message += ChatColor.WHITE + "You are running the latest version (" + ChatColor.GRAY + this.latestVersion + ChatColor.WHITE + ").";
         }
         return message;
     }
 
     @Override
     public void run() {
+        if (this.currentVersion.contains("-SNAPSHOT")) {
+            return;
+        }
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL(
                 "https://api.spigotmc.org/legacy/update.php?resource=" + this.pluginId

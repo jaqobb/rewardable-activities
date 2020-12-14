@@ -34,19 +34,32 @@ block:
         commands:
         - "say {player} broke a stone! ({group})"
       # Additional reward group.
+      # As you can see below, you can provide more rewards
+      # but only one will be chosen (there is a chance for
+      # all rewards to fail resulting in no rewards).
       vip:
-        chance: 75.0
+      - chance: 75.0
         minimum-economy: 0.0
         maximum-economy: 8.0
         commands:
-        - "say {player} broke a stone! ({group})"
+        - "say {player} broke a stone! ({group} 75%)"
+      - chance: 25.0
+        minimum-economy: 0.0
+        maximum-economy: 32.0
+        commands:
+        - "say {player} broke a stone! ({group} 25%)"
       # Additional reward group.
       mvip:
-        chance: 75.0
+      - chance: 75.0
         minimum-economy: 0.0
         maximum-economy: 16.0
         commands:
-        - "say {player} broke a stone! ({group})"
+        - "say {player} broke a stone! ({group} 75%)"
+      - chance: 25.0
+        minimum-economy: 0.0
+        maximum-economy: 96.0
+        commands:
+        - "say {player} broke a stone! ({group} 25%)"
     grass_block:
       default:
         chance: 100.0

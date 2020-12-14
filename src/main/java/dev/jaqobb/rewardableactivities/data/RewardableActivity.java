@@ -25,17 +25,18 @@
 package dev.jaqobb.rewardableactivities.data;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import org.bukkit.entity.Player;
 
 public final class RewardableActivity {
 
     private final String id;
-    private final Map<String, RewardableActivityReward> rewards;
+    private final Map<String, List<RewardableActivityReward>> rewards;
 
     public RewardableActivity(
         final String id,
-        final Map<String, RewardableActivityReward> rewards
+        final Map<String, List<RewardableActivityReward>> rewards
     ) {
         this.id = id;
         this.rewards = rewards;
@@ -45,11 +46,11 @@ public final class RewardableActivity {
         return this.id;
     }
 
-    public Map<String, RewardableActivityReward> getRewards() {
+    public Map<String, List<RewardableActivityReward>> getRewards() {
         return Collections.unmodifiableMap(this.rewards);
     }
 
-    public RewardableActivityReward getReward(final Player player) {
+    public List<RewardableActivityReward> getRewards(final Player player) {
         String groupToUse = "default";
         for (String group : this.rewards.keySet()) {
             if (player.hasPermission("rewardableactivities.group." + group)) {
@@ -57,5 +58,14 @@ public final class RewardableActivity {
             }
         }
         return this.rewards.get(groupToUse);
+    }
+
+    public RewardableActivityReward getReward(final Player player) {
+        for (RewardableActivityReward reward : this.getRewards(player)) {
+            if (reward.testChance()) {
+                return reward;
+            }
+        }
+        return null;
     }
 }
