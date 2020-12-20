@@ -153,7 +153,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         final Object value
     ) {
         if (!metadatable.hasMetadata(key)) {
-            metadatable.setMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, new FixedMetadataValue(this, value));
+            metadatable.setMetadata(key, new FixedMetadataValue(this, value));
         }
     }
 
