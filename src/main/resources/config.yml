@@ -1,9 +1,11 @@
 # Block related settings and rewardable activities.
 block:
-  # Whether ownership of the block should be checked.
-  # If set to true, breaking a block that was placed by a player
-  # will result in no rewards given.
-  ownership-check: true
+  # Ownership check settings.
+  ownership-check:
+    # Whether place ownership of the block should be checked.
+    # If set to true, breaking a block that was placed by a player
+    # will result in no rewards given.
+    place: true
   # Block break rewardable activities section.
   # Block break rewardable activities trigger on block break.
   break:
@@ -77,10 +79,16 @@ block:
 
 # Entity related settings and rewardable activities.
 entity:
-  # Whether ownership of the entity should be checked.
-  # If set to true, killing an entity that was bred by a player
-  # will result in no rewards given.
-  ownership-check: true
+  # Ownership check settings.
+  ownership-check:
+    # Whether breed ownership of the entity should be checked.
+    # If set to true, killing an entity that was bred by a player
+    # will result in no rewards given.
+    breed: true
+    # Whether spawner ownership of the entity should be checked.
+    # If set to true, killing an entity that was spawned by a spawner
+    # will result in no rewards given.
+    spawner: true
   # Entity kill rewardable activities section.
   # Entity kill rewardable activities trigger on entity kill.
   kill:

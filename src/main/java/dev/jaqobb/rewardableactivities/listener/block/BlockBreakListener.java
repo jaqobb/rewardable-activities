@@ -25,6 +25,7 @@
 package dev.jaqobb.rewardableactivities.listener.block;
 
 import com.cryptomorin.xseries.XMaterial;
+import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import dev.jaqobb.rewardableactivities.data.RewardableActivity;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
@@ -47,8 +48,8 @@ public final class BlockBreakListener implements Listener {
     public void onBlockBreak(final BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        if (this.plugin.isBlockOwnershipCheckEnabled() && this.plugin.isBlockPlacedByPlayer(block)) {
-            this.plugin.unsetBlockPlacedByPlayer(block);
+        if (this.plugin.isBlockPlaceOwnershipCheckEnabled() && this.plugin.hasMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
+            this.plugin.unsetMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
             return;
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockBreakRewardableActivity(XMaterial.matchXMaterial(block.getType()));

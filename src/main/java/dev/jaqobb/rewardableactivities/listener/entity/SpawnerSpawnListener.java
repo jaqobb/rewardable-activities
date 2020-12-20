@@ -22,35 +22,27 @@
  * SOFTWARE.
  */
 
-package dev.jaqobb.rewardableactivities.listener.block;
+package dev.jaqobb.rewardableactivities.listener.entity;
 
 import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
-import java.util.List;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 
-public final class BlockExplodeListener implements Listener {
+public final class SpawnerSpawnListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockExplodeListener(final RewardableActivitiesPlugin plugin) {
+    public SpawnerSpawnListener(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockExplode(final BlockExplodeEvent event) {
-        if (!this.plugin.isBlockPlaceOwnershipCheckEnabled()) {
-            return;
-        }
-        List<Block> blocks = event.blockList();
-        for (Block block : blocks) {
-            if (this.plugin.hasMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
-                this.plugin.unsetMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
-            }
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntitySpawn(final SpawnerSpawnEvent event) {
+        if (this.plugin.isEntitySpawnerOwnershipCheckEnabled()) {
+            this.plugin.setMetadata(event.getEntity(), RewardableActivitiesConstants.SPAWNED_BY_SPAWNER_KEY, true);
         }
     }
 }

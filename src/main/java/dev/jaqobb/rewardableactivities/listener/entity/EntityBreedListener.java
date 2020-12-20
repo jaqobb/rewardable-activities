@@ -24,6 +24,7 @@
 
 package dev.jaqobb.rewardableactivities.listener.entity;
 
+import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import dev.jaqobb.rewardableactivities.data.RewardableActivity;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
@@ -53,8 +54,8 @@ public final class EntityBreedListener implements Listener {
             return;
         }
         Player breederPlayer = (Player) breeder;
-        if (this.plugin.isEntityOwnershipCheckEnabled()) {
-            this.plugin.setEntityBredByPlayer(child);
+        if (this.plugin.isEntityBreedOwnershipCheckEnabled()) {
+            this.plugin.setMetadata(child, RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, true);
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityBreedRewardableActivity(child.getType());
         if (rewardableActivity == null) {

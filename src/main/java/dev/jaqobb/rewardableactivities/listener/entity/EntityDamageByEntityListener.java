@@ -24,6 +24,7 @@
 
 package dev.jaqobb.rewardableactivities.listener.entity;
 
+import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import dev.jaqobb.rewardableactivities.data.RewardableActivity;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
@@ -58,7 +59,10 @@ public final class EntityDamageByEntityListener implements Listener {
         if (victim.getHealth() - event.getFinalDamage() > 0.0D) {
             return;
         }
-        if (this.plugin.isEntityOwnershipCheckEnabled() && this.plugin.isEntityBredByPlayer(victim)) {
+        if (this.plugin.isEntityBreedOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.BRED_BY_PLAYER_KEY)) {
+            return;
+        }
+        if (this.plugin.isEntitySpawnerOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.SPAWNED_BY_SPAWNER_KEY)) {
             return;
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityKillRewardableActivity(victim.getType());

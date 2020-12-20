@@ -33,6 +33,7 @@ import dev.jaqobb.rewardableactivities.listener.block.BlockPlaceListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityBreedListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityDamageByEntityListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityExplodeListener;
+import dev.jaqobb.rewardableactivities.listener.entity.SpawnerSpawnListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
 import java.util.ArrayList;
@@ -42,16 +43,17 @@ import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RewardableActivitiesPlugin extends JavaPlugin {
 
-    private boolean blockOwnershipCheckEnabled;
-    private boolean entityOwnershipCheckEnabled;
+    private boolean blockPlaceOwnershipCheckEnabled;
+    private boolean entityBreedOwnershipCheckEnabled;
+    private boolean entitySpawnerOwnershipCheckEnabled;
     private Metrics metrics;
     private Updater updater;
     private Economy economy;
@@ -88,14 +90,16 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         pluginManager.registerEvents(new EntityDamageByEntityListener(this), this);
         pluginManager.registerEvents(new EntityBreedListener(this), this);
         pluginManager.registerEvents(new EntityExplodeListener(this), this);
+        pluginManager.registerEvents(new SpawnerSpawnListener(this), this);
     }
 
     @Override
     public void reloadConfig() {
         super.reloadConfig();
         this.getLogger().log(Level.INFO, "Loading configuration...");
-        this.blockOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check", true);
-        this.entityOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check", true);
+        this.blockPlaceOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check.place", this.getConfig().getBoolean("block.ownership-check", true));
+        this.entityBreedOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check.breed", this.getConfig().getBoolean("entity.ownership-check", true));
+        this.entitySpawnerOwnershipCheckEnabled = this.getConfig().getBoolean("enity.ownership-check.spawner", true);
         this.getLogger().log(Level.INFO, "Loading rewardable activities...");
         if (this.repository == null) {
             this.repository = new RewardableActivityRepository(this);
@@ -108,12 +112,16 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, " * Entity breed: " + this.repository.getEntityBreedRewardableActivities().size());
     }
 
-    public boolean isBlockOwnershipCheckEnabled() {
-        return this.blockOwnershipCheckEnabled;
+    public boolean isBlockPlaceOwnershipCheckEnabled() {
+        return this.blockPlaceOwnershipCheckEnabled;
     }
 
-    public boolean isEntityOwnershipCheckEnabled() {
-        return this.entityOwnershipCheckEnabled;
+    public boolean isEntityBreedOwnershipCheckEnabled() {
+        return this.entityBreedOwnershipCheckEnabled;
+    }
+
+    public boolean isEntitySpawnerOwnershipCheckEnabled() {
+        return this.entitySpawnerOwnershipCheckEnabled;
     }
 
     public Metrics getMetrics() {
@@ -132,35 +140,29 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         return this.repository;
     }
 
-    public boolean isBlockPlacedByPlayer(final Block block) {
-        return block.hasMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
+    public boolean hasMetadata(
+        final Metadatable metadatable,
+        final String key
+    ) {
+        return metadatable.hasMetadata(key);
     }
 
-    public void setBlockPlacedByPlayer(final Block block) {
-        if (!block.hasMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
-            block.setMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
+    public void setMetadata(
+        final Metadatable metadatable,
+        final String key,
+        final Object value
+    ) {
+        if (!metadatable.hasMetadata(key)) {
+            metadatable.setMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, new FixedMetadataValue(this, value));
         }
     }
 
-    public void unsetBlockPlacedByPlayer(final Block block) {
-        if (block.hasMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
-            block.removeMetadata(RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, this);
-        }
-    }
-
-    public boolean isEntityBredByPlayer(final Entity entity) {
-        return entity.hasMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY);
-    }
-
-    public void setEntityBredByPlayer(final Entity entity) {
-        if (!entity.hasMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY)) {
-            entity.setMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, new FixedMetadataValue(this, true));
-        }
-    }
-
-    public void unsetEntityBredByPlayer(final Entity entity) {
-        if (entity.hasMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY)) {
-            entity.removeMetadata(RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, this);
+    public void unsetMetadata(
+        final Metadatable metadatable,
+        final String key
+    ) {
+        if (metadatable.hasMetadata(key)) {
+            metadatable.removeMetadata(key, this);
         }
     }
 
@@ -171,7 +173,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         List<Block> blocksPlacedByPlayer = new ArrayList<>(blocks.size());
         List<Block> blocksSoonToBePlacedByPlayer = new ArrayList<>(blocks.size());
         for (Block block : blocks) {
-            if (!blocksPlacedByPlayer.contains(block) && this.isBlockPlacedByPlayer(block)) {
+            if (!blocksPlacedByPlayer.contains(block) && this.hasMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
                 blocksPlacedByPlayer.add(block);
             }
         }
@@ -180,11 +182,11 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
                 continue;
             }
             if (!blocksSoonToBePlacedByPlayer.contains(block)) {
-                this.unsetBlockPlacedByPlayer(block);
+                this.unsetMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
             }
             Block blockSoonToBePlacedByPlayer = block.getRelative(direction);
             blocksSoonToBePlacedByPlayer.add(blockSoonToBePlacedByPlayer);
-            this.setBlockPlacedByPlayer(blockSoonToBePlacedByPlayer);
+            this.setMetadata(blockSoonToBePlacedByPlayer, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, true);
         }
     }
 

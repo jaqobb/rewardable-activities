@@ -40,7 +40,7 @@ public final class BlockPistonExtendListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonExtend(final BlockPistonExtendEvent event) {
-        if (this.plugin.isBlockOwnershipCheckEnabled()) {
+        if (this.plugin.isBlockPlaceOwnershipCheckEnabled()) {
             this.plugin.updatePistonBlocks(event.getDirection(), event.getBlocks());
         }
     }

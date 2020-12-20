@@ -24,6 +24,7 @@
 
 package dev.jaqobb.rewardableactivities.listener.entity;
 
+import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import java.util.List;
 import org.bukkit.block.Block;
@@ -42,13 +43,13 @@ public final class EntityExplodeListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityExplode(final EntityExplodeEvent event) {
-        if (!this.plugin.isBlockOwnershipCheckEnabled()) {
+        if (!this.plugin.isBlockPlaceOwnershipCheckEnabled()) {
             return;
         }
         List<Block> blocks = event.blockList();
         for (Block block : blocks) {
-            if (this.plugin.isBlockPlacedByPlayer(block)) {
-                this.plugin.unsetBlockPlacedByPlayer(block);
+            if (this.plugin.hasMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
+                this.plugin.unsetMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
             }
         }
     }

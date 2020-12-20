@@ -43,7 +43,7 @@ public final class BlockPistonRetractListener implements Listener {
         if (!event.isSticky()) {
             return;
         }
-        if (this.plugin.isBlockOwnershipCheckEnabled()) {
+        if (this.plugin.isBlockPlaceOwnershipCheckEnabled()) {
             this.plugin.updatePistonBlocks(event.getDirection(), event.getBlocks());
         }
     }
