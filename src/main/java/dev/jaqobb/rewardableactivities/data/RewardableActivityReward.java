@@ -97,8 +97,11 @@ public final class RewardableActivityReward {
         final Economy economy,
         final Player player
     ) {
-        if (economy != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy > this.maximumEconomy) {
-            this.depositEconomy(economy, player, this.getRandomEconomy());
+        if (economy != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy <= this.maximumEconomy) {
+            double randomEconomy = this.getRandomEconomy();
+            if (randomEconomy > 0.0D) {
+                this.depositEconomy(economy, player, randomEconomy);
+            }
         }
         this.executeCommands(player);
     }
