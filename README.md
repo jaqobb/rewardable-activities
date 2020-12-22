@@ -1,5 +1,5 @@
 # Rewardable Activities
-![Workflow: build](https://github.com/jaqobb/rewardable-activities/workflows/build/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![Workflow: build](https://github.com/jaqobb/rewardable-activities/workflows/build/badge.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 Rewardable Activities is a Spigot plugin that rewards players when they do certain activities.
 
