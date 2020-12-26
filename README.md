@@ -16,10 +16,11 @@ Rewardable Activities supports:
 * [x] Block place ownership check (not rewarding players when they break a block that was placed by a player) - since 1.5.0
 * [x] Multiple rewards per group - since 1.6.0
 * [x] Entity spawner ownership check (not rewarding players when they kill an entity that was spawned by a spawner) - since 1.7.0
+* [x] Rewarding players when they fish an item - since 1.8.0
 
 ### Usage
 
-I don't think explaining usage is necessary, everything is documented in the default configuration file. However, feel free to create an issue if you need help with anything.
+Everything is documented in the default configuration file but feel free to create an issue if you need help with anything.
 
 ### Requirements
 

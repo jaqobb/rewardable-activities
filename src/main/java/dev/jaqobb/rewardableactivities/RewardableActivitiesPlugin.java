@@ -34,6 +34,7 @@ import dev.jaqobb.rewardableactivities.listener.entity.EntityBreedListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityDamageByEntityListener;
 import dev.jaqobb.rewardableactivities.listener.entity.EntityExplodeListener;
 import dev.jaqobb.rewardableactivities.listener.entity.SpawnerSpawnListener;
+import dev.jaqobb.rewardableactivities.listener.player.PlayerFishListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         this.saveDefaultConfig();
-        this.reloadConfig();
+        this.loadConfig(false);
     }
 
     @Override
@@ -81,35 +82,35 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         }
         this.getLogger().log(Level.INFO, "Registering listeners...");
         PluginManager pluginManager = this.getServer().getPluginManager();
-        pluginManager.registerEvents(new PlayerJoinListener(this), this);
         pluginManager.registerEvents(new BlockBreakListener(this), this);
-        pluginManager.registerEvents(new BlockPlaceListener(this), this);
+        pluginManager.registerEvents(new BlockExplodeListener(this), this);
         pluginManager.registerEvents(new BlockPistonExtendListener(this), this);
         pluginManager.registerEvents(new BlockPistonRetractListener(this), this);
-        pluginManager.registerEvents(new BlockExplodeListener(this), this);
-        pluginManager.registerEvents(new EntityDamageByEntityListener(this), this);
+        pluginManager.registerEvents(new BlockPlaceListener(this), this);
         pluginManager.registerEvents(new EntityBreedListener(this), this);
+        pluginManager.registerEvents(new EntityDamageByEntityListener(this), this);
         pluginManager.registerEvents(new EntityExplodeListener(this), this);
         pluginManager.registerEvents(new SpawnerSpawnListener(this), this);
+        pluginManager.registerEvents(new PlayerFishListener(this), this);
+        pluginManager.registerEvents(new PlayerJoinListener(this), this);
     }
 
-    @Override
-    public void reloadConfig() {
-        super.reloadConfig();
-        this.getLogger().log(Level.INFO, "Loading configuration...");
+    public void loadConfig(final boolean reload) {
+        this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oading configuration...");
         this.blockPlaceOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check.place", this.getConfig().getBoolean("block.ownership-check", true));
         this.entityBreedOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check.breed", this.getConfig().getBoolean("entity.ownership-check", true));
         this.entitySpawnerOwnershipCheckEnabled = this.getConfig().getBoolean("enity.ownership-check.spawner", true);
-        this.getLogger().log(Level.INFO, "Loading rewardable activities...");
+        this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oading rewardable activities...");
         if (this.repository == null) {
             this.repository = new RewardableActivityRepository(this);
         }
         this.repository.loadAllRewardableActivities();
-        this.getLogger().log(Level.INFO, "Loaded rewardable activities:");
+        this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oaded rewardable activities:");
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Entity kill: " + this.repository.getEntityKillRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Entity breed: " + this.repository.getEntityBreedRewardableActivities().size());
+        this.getLogger().log(Level.INFO, " * Item fish: " + this.repository.getItemFishRewardableActivities().size());
     }
 
     public boolean isBlockPlaceOwnershipCheckEnabled() {

@@ -45,6 +45,7 @@ public final class RewardableActivityRepository {
     private final Map<XMaterial, RewardableActivity> blockPlaceRewardableActivities;
     private final Map<EntityType, RewardableActivity> entityKillRewardableActivities;
     private final Map<EntityType, RewardableActivity> entityBreedRewardableActivities;
+    private final Map<XMaterial, RewardableActivity> itemFishRewardableActivities;
 
     public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
@@ -52,6 +53,7 @@ public final class RewardableActivityRepository {
         this.blockPlaceRewardableActivities = new EnumMap<>(XMaterial.class);
         this.entityKillRewardableActivities = new EnumMap<>(EntityType.class);
         this.entityBreedRewardableActivities = new EnumMap<>(EntityType.class);
+        this.itemFishRewardableActivities = new EnumMap<>(XMaterial.class);
     }
 
     public void loadAllRewardableActivities() {
@@ -59,6 +61,7 @@ public final class RewardableActivityRepository {
         this.loadBlockPlaceRewardableActivities();
         this.loadEntityKillRewardableActivities();
         this.loadEntityBreedRewardableActivities();
+        this.loadItemFishRewardableActivities();
     }
 
     public void loadBlockBreakRewardableActivities() {
@@ -81,6 +84,11 @@ public final class RewardableActivityRepository {
     public void loadEntityBreedRewardableActivities() {
         this.entityBreedRewardableActivities.clear();
         this.entityBreedRewardableActivities.putAll(this.loadRewardableActivities("entity.breed", entityType -> EntityType.fromName(entityType.toLowerCase())));
+    }
+
+    public void loadItemFishRewardableActivities() {
+        this.itemFishRewardableActivities.clear();
+        this.itemFishRewardableActivities.putAll(this.loadRewardableActivities("item.fish", materialType -> XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null)));
     }
 
     @SuppressWarnings("unchecked")
@@ -153,5 +161,13 @@ public final class RewardableActivityRepository {
 
     public RewardableActivity getEntityBreedRewardableActivity(final EntityType entityType) {
         return this.entityBreedRewardableActivities.get(entityType);
+    }
+
+    public Collection<RewardableActivity> getItemFishRewardableActivities() {
+        return Collections.unmodifiableCollection(this.itemFishRewardableActivities.values());
+    }
+
+    public RewardableActivity getItemFishRewardableActivity(final XMaterial material) {
+        return this.itemFishRewardableActivities.get(material);
     }
 }

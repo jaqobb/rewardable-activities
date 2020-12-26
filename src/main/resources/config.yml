@@ -146,3 +146,62 @@ entity:
         chance: 100.0
         commands:
         - "say {player} bred a pig! ({group})"
+
+# Item related settings and rewardable activities.
+item:
+  # Item catch rewardable activities section.
+  # Item catch rewardable activities trigger on item fish.
+  fish:
+    # Material.
+    salmon:
+      # Groups with the rewards.
+      # There has to be a 'default' group at least.
+      # There can also be more groups but the "better" ones should be below the others.
+      # For example:
+      # default ("the worst" group -> first)
+      # vip ("better than the default" group -> below the 'default' group)
+      # mvp ("better than the vip" group -> below the 'vip' group)
+      # Permission to be able to receive group rewards: 'rewardableactivities.group.<group>'
+      # (default group does not require this permission)
+      # Default reward group.
+      default:
+        # Chance to obtain this reward.
+        chance: 75.0
+        # Economy settings (require Vault and economy plugin to be used).
+        # Economy settings can be ommited if ^ conditions are not met.
+        # Minimum economy that the player will receive.
+        minimum-economy: 0.0
+        # Maximum economy that the player will receive.
+        maximum-economy: 4.0
+        # Commands that will be executed.
+        # Available placeholders:
+        # {player} -> player name
+        commands:
+        - "say {player} fished a salmon! ({group})"
+      # Additional reward group.
+      # As you can see below, you can provide more rewards
+      # but only one will be chosen (there is a chance for
+      # all rewards to fail resulting in no rewards).
+      vip:
+      - chance: 75.0
+        minimum-economy: 0.0
+        maximum-economy: 8.0
+        commands:
+        - "say {player} fished a salmon! ({group} 75%)"
+      - chance: 25.0
+        minimum-economy: 0.0
+        maximum-economy: 32.0
+        commands:
+        - "say {player} fished a salmon! ({group} 25%)"
+      # Additional reward group.
+      mvip:
+      - chance: 75.0
+        minimum-economy: 0.0
+        maximum-economy: 16.0
+        commands:
+        - "say {player} fished a salmon! ({group} 75%)"
+      - chance: 25.0
+        minimum-economy: 0.0
+        maximum-economy: 96.0
+        commands:
+        - "say {player} fished a salmon! ({group} 25%)"
