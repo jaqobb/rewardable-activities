@@ -104,7 +104,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oading configuration...");
         this.blockPlaceOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check.place", this.getConfig().getBoolean("block.ownership-check", true));
         this.entityBreedOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check.breed", this.getConfig().getBoolean("entity.ownership-check", true));
-        this.entitySpawnerOwnershipCheckEnabled = this.getConfig().getBoolean("enity.ownership-check.spawner", true);
+        this.entitySpawnerOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check.spawner", true);
         this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oading rewardable activities...");
         if (this.repository == null) {
             this.repository = new RewardableActivityRepository(this);
