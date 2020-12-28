@@ -74,6 +74,9 @@ public final class RewardableActivityReward {
     }
 
     public double getRandomEconomy() {
+        Bukkit.broadcastMessage("Minimum: " + this.minimumEconomy);
+        Bukkit.broadcastMessage("Maximum: " + this.maximumEconomy);
+        Bukkit.broadcastMessage("Rolled: " + RandomUtils.getRandomDouble(this.minimumEconomy, this.maximumEconomy));
         return RandomUtils.getRandomDouble(this.minimumEconomy, this.maximumEconomy);
     }
 

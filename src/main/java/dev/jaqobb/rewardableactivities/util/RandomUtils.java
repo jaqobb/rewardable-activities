@@ -24,40 +24,21 @@
 
 package dev.jaqobb.rewardableactivities.util;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 public final class RandomUtils {
 
+    private static final Random RANDOM = new Random();
+
     private RandomUtils() {
         throw new UnsupportedOperationException("Cannot create instance of this class");
-    }
-
-    public static int getRandomInt(
-        final int minimum,
-        final int maximum
-    ) {
-        return (int) getRandomLong(minimum, maximum);
-    }
-
-    public static long getRandomLong(
-        final long minimum,
-        final long maximum
-    ) {
-        return (Math.abs(ThreadLocalRandom.current().nextLong()) % ((maximum - minimum) + 1)) + minimum;
-    }
-
-    public static double getRandomFloat(
-        final float minimum,
-        final float maximum
-    ) {
-        return (ThreadLocalRandom.current().nextFloat() * (maximum - minimum)) + minimum;
     }
 
     public static double getRandomDouble(
         final double minimum,
         final double maximum
     ) {
-        return (ThreadLocalRandom.current().nextDouble() * (maximum - minimum)) + minimum;
+        return (RANDOM.nextDouble() * (maximum - minimum)) + minimum;
     }
 
     public static boolean chance(final double chance) {
