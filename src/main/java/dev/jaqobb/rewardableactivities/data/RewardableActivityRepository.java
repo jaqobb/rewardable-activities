@@ -56,39 +56,65 @@ public final class RewardableActivityRepository {
         this.itemFishRewardableActivities = new EnumMap<>(XMaterial.class);
     }
 
-    public void loadAllRewardableActivities() {
-        this.loadBlockBreakRewardableActivities();
-        this.loadBlockPlaceRewardableActivities();
-        this.loadEntityKillRewardableActivities();
-        this.loadEntityBreedRewardableActivities();
-        this.loadItemFishRewardableActivities();
+    public void loadAllRewardableActivities(final boolean reload) {
+        this.loadBlockBreakRewardableActivities(reload);
+        this.loadBlockPlaceRewardableActivities(reload);
+        this.loadEntityKillRewardableActivities(reload);
+        this.loadEntityBreedRewardableActivities(reload);
+        this.loadItemFishRewardableActivities(reload);
     }
 
-    public void loadBlockBreakRewardableActivities() {
-        this.blockBreakRewardableActivities.clear();
-        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialType -> XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null)));
+    public void loadBlockBreakRewardableActivities(final boolean reload) {
+        if (reload) {
+            this.blockBreakRewardableActivities.clear();
+        }
+        this.blockBreakRewardableActivities.putAll(this.loadRewardableActivities("block.break", materialType -> {
+            XMaterial material = XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null);
+            if (material == null) {
+                throw new EnumConstantNotPresentException(XMaterial.class, materialType);
+            }
+            return material;
+        }));
     }
 
-    public void loadBlockPlaceRewardableActivities() {
-        this.blockPlaceRewardableActivities.clear();
-        this.blockPlaceRewardableActivities.putAll(this.loadRewardableActivities("block.place", materialType -> XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null)));
+    public void loadBlockPlaceRewardableActivities(final boolean reload) {
+        if (reload) {
+            this.blockPlaceRewardableActivities.clear();
+        }
+        this.blockPlaceRewardableActivities.putAll(this.loadRewardableActivities("block.place", materialType -> {
+            XMaterial material = XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null);
+            if (material == null) {
+                throw new EnumConstantNotPresentException(XMaterial.class, materialType);
+            }
+            return material;
+        }));
     }
 
-    @SuppressWarnings("deprecation")
-    public void loadEntityKillRewardableActivities() {
-        this.entityKillRewardableActivities.clear();
-        this.entityKillRewardableActivities.putAll(this.loadRewardableActivities("entity.kill", entityType -> EntityType.fromName(entityType.toLowerCase())));
+    public void loadEntityKillRewardableActivities(final boolean reload) {
+        if (reload) {
+            this.entityKillRewardableActivities.clear();
+        }
+        this.entityKillRewardableActivities.putAll(this.loadRewardableActivities("entity.kill", entityType -> EntityType.valueOf(entityType.toUpperCase())));
     }
 
-    @SuppressWarnings("deprecation")
-    public void loadEntityBreedRewardableActivities() {
-        this.entityBreedRewardableActivities.clear();
-        this.entityBreedRewardableActivities.putAll(this.loadRewardableActivities("entity.breed", entityType -> EntityType.fromName(entityType.toLowerCase())));
+    public void loadEntityBreedRewardableActivities(final boolean reload) {
+        if (reload) {
+            this.entityBreedRewardableActivities.clear();
+        }
+        this.entityBreedRewardableActivities.putAll(this.loadRewardableActivities("entity.breed", entityType -> EntityType.valueOf(entityType.toUpperCase())));
     }
 
-    public void loadItemFishRewardableActivities() {
-        this.itemFishRewardableActivities.clear();
-        this.itemFishRewardableActivities.putAll(this.loadRewardableActivities("item.fish", materialType -> XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null)));
+    public void loadItemFishRewardableActivities(final boolean reload) {
+        if (reload) {
+            this.itemFishRewardableActivities.clear();
+        }
+        this.itemFishRewardableActivities.putAll(this.loadRewardableActivities("item.fish", materialType -> {
+            XMaterial material = XMaterial.matchXMaterial(materialType.toUpperCase()).orElse(null);
+            if (material == null) {
+                throw new EnumConstantNotPresentException(XMaterial.class, materialType);
+            }
+            return material;
+        }));
     }
 
     @SuppressWarnings("unchecked")

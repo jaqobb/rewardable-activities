@@ -22,6 +22,12 @@ bukkit {
     description = project.description
     author = "jaqobb"
     website = "https://jaqobb.dev"
+    commands {
+        create("rewardable-activities") {
+            description = "Rewardable Activities main command"
+            aliases = listOf("rewardableactivities")
+        }
+    }
 }
 
 tasks {
@@ -40,7 +46,7 @@ tasks {
         exclude("com/cryptomorin/xseries/XItemStack*")
         exclude("com/cryptomorin/xseries/XPotion*")
         exclude("com/cryptomorin/xseries/XSound*")
-        relocate("com.cryptomorin.xseries", "dev.jaqobb.rewardableactivities.library.com.cryptomorin.xseries")
+        relocate("com.cryptomorin.xseries", "dev.jaqobb.rewardableactivities.library.xseries")
         relocate("org.bstats.bukkit", "dev.jaqobb.rewardableactivities.metrics")
     }
 }

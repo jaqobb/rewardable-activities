@@ -24,6 +24,8 @@
 
 package dev.jaqobb.rewardableactivities;
 
+import dev.jaqobb.rewardableactivities.command.RewardableActivitiesCommand;
+import dev.jaqobb.rewardableactivities.command.RewardableActivitiesCommandTabCompleter;
 import dev.jaqobb.rewardableactivities.data.RewardableActivityRepository;
 import dev.jaqobb.rewardableactivities.listener.block.BlockBreakListener;
 import dev.jaqobb.rewardableactivities.listener.block.BlockExplodeListener;
@@ -80,6 +82,9 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         } else {
             this.getLogger().log(Level.INFO, "Could not find Vault or economy plugin, economy rewards will not be supported.");
         }
+        this.getLogger().log(Level.INFO, "Registering command...");
+        this.getCommand("rewardable-activities").setExecutor(new RewardableActivitiesCommand(this));
+        this.getCommand("rewardable-activities").setTabCompleter(new RewardableActivitiesCommandTabCompleter());
         this.getLogger().log(Level.INFO, "Registering listeners...");
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new BlockBreakListener(this), this);
@@ -104,7 +109,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         if (this.repository == null) {
             this.repository = new RewardableActivityRepository(this);
         }
-        this.repository.loadAllRewardableActivities();
+        this.repository.loadAllRewardableActivities(reload);
         this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oaded rewardable activities:");
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakRewardableActivities().size());
         this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceRewardableActivities().size());
