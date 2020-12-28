@@ -1,5 +1,6 @@
 package dev.jaqobb.rewardableactivities.command;
 
+import java.util.LinkedList;
 import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,16 @@ public final class RewardableActivitiesCommandTabCompleter implements TabComplet
         final String label,
         final String[] arguments
     ) {
-        return null;
+        if (!sender.hasPermission("rewardableactivities.command.rewardableactivities")) {
+            return null;
+        }
+        List<String> completions = new LinkedList<>();
+        if (arguments.length == 1) {
+            String argument = arguments[0].toLowerCase();
+            if ("reload".startsWith(argument)) {
+                completions.add("reload");
+            }
+        }
+        return completions;
     }
 }
