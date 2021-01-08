@@ -59,10 +59,10 @@ public final class EntityDamageByEntityListener implements Listener {
         if (victim.getHealth() - event.getFinalDamage() > 0.0D) {
             return;
         }
-        if (this.plugin.isEntityBreedOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.BRED_BY_PLAYER_KEY)) {
+        if (this.plugin.isEntityBreedOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.ENTITY_BRED_BY_PLAYER_KEY)) {
             return;
         }
-        if (this.plugin.isEntitySpawnerOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.SPAWNED_BY_SPAWNER_KEY)) {
+        if (this.plugin.isEntitySpawnerOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.ENTITY_SPAWNED_BY_SPAWNER_KEY)) {
             return;
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityKillRewardableActivity(victim.getType());

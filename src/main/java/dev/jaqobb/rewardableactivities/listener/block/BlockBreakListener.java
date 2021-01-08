@@ -48,8 +48,11 @@ public final class BlockBreakListener implements Listener {
     public void onBlockBreak(final BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        if (this.plugin.isBlockPlaceOwnershipCheckEnabled() && this.plugin.hasMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
-            this.plugin.unsetMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
+        if (this.plugin.isBlockPlaceOwnershipCheckEnabled() && !this.plugin.hasMetadata(block, RewardableActivitiesConstants.BLOCK_BROKEN_BY_PLAYER_KEY)) {
+            this.plugin.setMetadata(block, RewardableActivitiesConstants.BLOCK_BROKEN_BY_PLAYER_KEY, true);
+        }
+        if (this.plugin.isBlockBreakOwnershipCheckEnabled() && this.plugin.hasMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY)) {
+            this.plugin.unsetMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY);
             return;
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockBreakRewardableActivity(XMaterial.matchXMaterial(block.getType()));

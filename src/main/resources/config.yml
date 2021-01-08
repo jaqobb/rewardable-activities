@@ -2,8 +2,12 @@
 block:
   # Ownership check settings.
   ownership-check:
-    # Whether place ownership of the block should be checked.
+    # Whether break ownership of the block should be checked.
     # If set to true, breaking a block that was placed by a player
+    # will result in no rewards given.
+    break: true
+    # Whether place ownership of the block should be checked.
+    # If set to true, placing a block in a place where there was already a block broken by a player
     # will result in no rewards given.
     place: true
   # Block break rewardable activities section.

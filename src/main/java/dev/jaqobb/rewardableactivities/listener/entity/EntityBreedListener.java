@@ -55,7 +55,7 @@ public final class EntityBreedListener implements Listener {
         }
         Player breederPlayer = (Player) breeder;
         if (this.plugin.isEntityBreedOwnershipCheckEnabled()) {
-            this.plugin.setMetadata(child, RewardableActivitiesConstants.BRED_BY_PLAYER_KEY, true);
+            this.plugin.setMetadata(child, RewardableActivitiesConstants.ENTITY_BRED_BY_PLAYER_KEY, true);
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getEntityBreedRewardableActivity(child.getType());
         if (rewardableActivity == null) {

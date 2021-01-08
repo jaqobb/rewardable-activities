@@ -48,8 +48,16 @@ public final class BlockPlaceListener implements Listener {
     public void onBlockPlace(final BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
+        if (this.plugin.isBlockBreakOwnershipCheckEnabled()) {
+            this.plugin.setMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY, true);
+        }
+        boolean blockPlacedByPlayer = this.plugin.hasMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_2_KEY);
         if (this.plugin.isBlockPlaceOwnershipCheckEnabled()) {
-            this.plugin.setMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY, true);
+            this.plugin.setMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_2_KEY, true);
+            if (blockPlacedByPlayer || this.plugin.hasMetadata(block, RewardableActivitiesConstants.BLOCK_BROKEN_BY_PLAYER_KEY)) {
+                this.plugin.unsetMetadata(block, RewardableActivitiesConstants.BLOCK_BROKEN_BY_PLAYER_KEY);
+                return;
+            }
         }
         RewardableActivity rewardableActivity = this.plugin.getRepository().getBlockPlaceRewardableActivity(XMaterial.matchXMaterial(block.getType()));
         if (rewardableActivity == null) {

@@ -43,13 +43,13 @@ public final class BlockExplodeListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockExplode(final BlockExplodeEvent event) {
-        if (!this.plugin.isBlockPlaceOwnershipCheckEnabled()) {
+        if (!this.plugin.isBlockBreakOwnershipCheckEnabled()) {
             return;
         }
         List<Block> blocks = event.blockList();
         for (Block block : blocks) {
-            if (this.plugin.hasMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY)) {
-                this.plugin.unsetMetadata(block, RewardableActivitiesConstants.PLACED_BY_PLAYER_KEY);
+            if (this.plugin.hasMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY)) {
+                this.plugin.unsetMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY);
             }
         }
     }

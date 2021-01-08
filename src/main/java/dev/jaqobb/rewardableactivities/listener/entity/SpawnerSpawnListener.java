@@ -42,7 +42,7 @@ public final class SpawnerSpawnListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntitySpawn(final SpawnerSpawnEvent event) {
         if (this.plugin.isEntitySpawnerOwnershipCheckEnabled()) {
-            this.plugin.setMetadata(event.getEntity(), RewardableActivitiesConstants.SPAWNED_BY_SPAWNER_KEY, true);
+            this.plugin.setMetadata(event.getEntity(), RewardableActivitiesConstants.ENTITY_SPAWNED_BY_SPAWNER_KEY, true);
         }
     }
 }
