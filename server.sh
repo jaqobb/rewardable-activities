@@ -10,7 +10,7 @@ case "$(echo "${SHELL}" | sed -E 's|/usr(/local)?||g')" in
 			RCPATH="${HOME}/.bash_aliases"
 		fi
 		SOURCE="${BASH_SOURCE[0]}"
-	;;a
+	;;
 esac
 
 while [ -h "${SOURCE}" ]; do
