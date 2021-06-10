@@ -38,6 +38,8 @@ import dev.jaqobb.rewardableactivities.listener.entity.EntityExplodeListener;
 import dev.jaqobb.rewardableactivities.listener.entity.SpawnerSpawnListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerFishListener;
 import dev.jaqobb.rewardableactivities.listener.player.PlayerJoinListener;
+import dev.jaqobb.rewardableactivities.listener.plugin.PluginDisableListener;
+import dev.jaqobb.rewardableactivities.listener.plugin.PluginEnableListener;
 import dev.jaqobb.rewardableactivities.updater.Updater;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,15 +60,22 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     private boolean                      blockPlaceOwnershipCheckEnabled;
     private boolean                      entityBreedOwnershipCheckEnabled;
     private boolean                      entitySpawnerOwnershipCheckEnabled;
+    private RewardableActivityRepository repository;
+    private boolean                      placeholderApiPresent;
+    private boolean                      mvdwPlaceholderApiPresent;
     private Metrics                      metrics;
     private Updater                      updater;
     private Economy                      economy;
-    private RewardableActivityRepository repository;
 
     @Override
     public void onLoad() {
         this.saveDefaultConfig();
         this.loadConfig(false);
+        PluginManager pluginManager = this.getServer().getPluginManager();
+        this.placeholderApiPresent     = pluginManager.getPlugin(RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME) != null;
+        this.mvdwPlaceholderApiPresent = pluginManager.getPlugin(RewardableActivitiesConstants.MVDW_PLACEHOLDER_API_PLUGIN_NAME) != null;
+        this.getLogger().log(Level.INFO, RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME + ": " + (this.placeholderApiPresent ? "present" : "not present") + ".");
+        this.getLogger().log(Level.INFO, RewardableActivitiesConstants.MVDW_PLACEHOLDER_API_PLUGIN_NAME + ": " + (this.mvdwPlaceholderApiPresent ? "present" : "not present") + ".");
     }
 
     @Override
@@ -99,6 +108,8 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         pluginManager.registerEvents(new SpawnerSpawnListener(this), this);
         pluginManager.registerEvents(new PlayerFishListener(this), this);
         pluginManager.registerEvents(new PlayerJoinListener(this), this);
+        pluginManager.registerEvents(new PluginDisableListener(this), this);
+        pluginManager.registerEvents(new PluginEnableListener(this), this);
     }
 
     public void loadConfig(boolean reload) {
@@ -136,6 +147,26 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
         return this.entitySpawnerOwnershipCheckEnabled;
     }
 
+    public RewardableActivityRepository getRepository() {
+        return this.repository;
+    }
+
+    public boolean isPlaceholderApiPresent() {
+        return this.placeholderApiPresent;
+    }
+
+    public void setPlaceholderApiPresent(boolean present) {
+        this.placeholderApiPresent = present;
+    }
+
+    public boolean isMvdwPlaceholderApiPresent() {
+        return this.mvdwPlaceholderApiPresent;
+    }
+
+    public void setMvdwPlaceholderApiPresent(boolean present) {
+        this.mvdwPlaceholderApiPresent = present;
+    }
+
     public Metrics getMetrics() {
         return this.metrics;
     }
@@ -146,10 +177,6 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
 
     public Economy getEconomy() {
         return this.economy;
-    }
-
-    public RewardableActivityRepository getRepository() {
-        return this.repository;
     }
 
     public boolean hasMetadata(Metadatable metadatable, String key) {

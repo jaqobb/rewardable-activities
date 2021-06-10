@@ -71,7 +71,7 @@ public final class EntityDamageByEntityListener implements Listener {
         }
         RewardableActivityReward rewardableActivityReward = rewardableActivity.getReward(attacker);
         if (rewardableActivityReward != null) {
-            rewardableActivityReward.reward(this.plugin.getEconomy(), attacker);
+            rewardableActivityReward.reward(this.plugin, attacker);
         }
     }
 

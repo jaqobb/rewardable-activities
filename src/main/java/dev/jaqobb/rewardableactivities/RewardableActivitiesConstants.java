@@ -30,6 +30,9 @@ public final class RewardableActivitiesConstants {
 
     public static final String PREFIX = ChatColor.GRAY + "Rewardable Activities" + ChatColor.GOLD + ChatColor.BOLD + " > ";
 
+    public static final String PLACEHOLDER_API_PLUGIN_NAME      = "PlaceholderAPI";
+    public static final String MVDW_PLACEHOLDER_API_PLUGIN_NAME = "MVdWPlaceholderAPI";
+
     public static final String BLOCK_BROKEN_BY_PLAYER_KEY   = "rewardableactivities:broken_by_player";
     public static final String BLOCK_PLACED_BY_PLAYER_KEY   = "rewardableactivities:placed_by_player";
     public static final String BLOCK_PLACED_BY_PLAYER_2_KEY = "rewardableactivities:placed_by_player_2";

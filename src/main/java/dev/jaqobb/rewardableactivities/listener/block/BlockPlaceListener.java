@@ -65,7 +65,7 @@ public final class BlockPlaceListener implements Listener {
         }
         RewardableActivityReward rewardableActivityReward = rewardableActivity.getReward(player);
         if (rewardableActivityReward != null) {
-            rewardableActivityReward.reward(this.plugin.getEconomy(), player);
+            rewardableActivityReward.reward(this.plugin, player);
         }
     }
 }

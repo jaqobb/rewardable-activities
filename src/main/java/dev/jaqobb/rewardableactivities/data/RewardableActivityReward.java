@@ -24,6 +24,7 @@
 
 package dev.jaqobb.rewardableactivities.data;
 
+import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
 import dev.jaqobb.rewardableactivities.util.RandomUtils;
 import java.util.Collection;
 import java.util.Collections;
@@ -79,17 +80,26 @@ public final class RewardableActivityReward {
         return Collections.unmodifiableCollection(this.commands);
     }
 
-    public void executeCommands(Player player) {
-        this.commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{player}", player.getName()).replace("{group}", this.group)));
+    public void executeCommands(RewardableActivitiesPlugin plugin, Player player) {
+        this.commands.forEach(command -> {
+            command = command.replace("{player}", player.getName()).replace("{group}", this.group);
+            if (plugin.isPlaceholderApiPresent()) {
+                command = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, command);
+            }
+            if (plugin.isMvdwPlaceholderApiPresent()) {
+                command = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, command);
+            }
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        });
     }
 
-    public void reward(Economy economy, Player player) {
-        if (economy != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy <= this.maximumEconomy) {
+    public void reward(RewardableActivitiesPlugin plugin, Player player) {
+        if (plugin.getEconomy() != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy <= this.maximumEconomy) {
             double randomEconomy = this.getRandomEconomy();
             if (randomEconomy > 0.0D) {
-                this.depositEconomy(economy, player, randomEconomy);
+                this.depositEconomy(plugin.getEconomy(), player, randomEconomy);
             }
         }
-        this.executeCommands(player);
+        this.executeCommands(plugin, player);
     }
 }

@@ -22,43 +22,34 @@
  * SOFTWARE.
  */
 
-package dev.jaqobb.rewardableactivities.listener.player;
+package dev.jaqobb.rewardableactivities.listener.plugin;
 
-import com.cryptomorin.xseries.XMaterial;
+import dev.jaqobb.rewardableactivities.RewardableActivitiesConstants;
 import dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin;
-import dev.jaqobb.rewardableactivities.data.RewardableActivity;
-import dev.jaqobb.rewardableactivities.data.RewardableActivityReward;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import java.util.logging.Level;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.plugin.Plugin;
 
-public final class PlayerFishListener implements Listener {
+public final class PluginDisableListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public PlayerFishListener(RewardableActivitiesPlugin plugin) {
+    public PluginDisableListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerFish(PlayerFishEvent event) {
-        Player player = event.getPlayer();
-        Entity caught = event.getCaught();
-        if (caught == null) {
-            return;
-        }
-        Item               caughtItem         = (Item) caught;
-        RewardableActivity rewardableActivity = this.plugin.getRepository().getItemFishRewardableActivity(XMaterial.matchXMaterial(caughtItem.getItemStack().getType()));
-        if (rewardableActivity == null) {
-            return;
-        }
-        RewardableActivityReward rewardableActivityReward = rewardableActivity.getReward(player);
-        if (rewardableActivityReward != null) {
-            rewardableActivityReward.reward(this.plugin, player);
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPluginDisable(PluginDisableEvent event) {
+        Plugin plugin = event.getPlugin();
+        if (plugin.getName().equals(RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME)) {
+            this.plugin.setPlaceholderApiPresent(false);
+            this.plugin.getLogger().log(Level.INFO, RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME + " integration has been disabled.");
+        } else if (plugin.getName().equals(RewardableActivitiesConstants.MVDW_PLACEHOLDER_API_PLUGIN_NAME)) {
+            this.plugin.setMvdwPlaceholderApiPresent(false);
+            this.plugin.getLogger().log(Level.INFO, RewardableActivitiesConstants.MVDW_PLACEHOLDER_API_PLUGIN_NAME + " integration has been disabled.");
         }
     }
 }

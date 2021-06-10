@@ -18,7 +18,7 @@ bukkit {
     main = "dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin"
     version = project.version as String
     apiVersion = "1.13"
-    softDepend = listOf("Vault")
+    softDepend = listOf("Vault", "PlaceholderAPI", "MVdWPlaceholderAPI")
     description = project.description
     author = "jaqobb"
     website = "https://jaqobb.dev"
@@ -69,6 +69,17 @@ repositories {
             includeGroup("net.milkbowl.vault")
         }
     }
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") {
+        content {
+            includeGroup("me.clip")
+        }
+    }
+    maven("http://repo.mvdw-software.be/content/groups/public/") {
+        isAllowInsecureProtocol = true
+        content {
+            includeGroup("be.maximvdw")
+        }
+    }
     maven("https://repo.codemc.org/repository/maven-public/") {
         content {
             includeGroup("org.bstats")
@@ -79,6 +90,10 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
+    compileOnly("me.clip:placeholderapi:2.10.9")
+    compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT") {
+        exclude("org.spigotmc")
+    }
     implementation("com.github.cryptomorin:XSeries:7.6.0.0.1")
     implementation("org.bstats:bstats-bukkit:1.7")
 }

@@ -63,7 +63,7 @@ public final class EntityBreedListener implements Listener {
         }
         RewardableActivityReward rewardableActivityReward = rewardableActivity.getReward(breederPlayer);
         if (rewardableActivityReward != null) {
-            rewardableActivityReward.reward(this.plugin.getEconomy(), breederPlayer);
+            rewardableActivityReward.reward(this.plugin, breederPlayer);
         }
     }
 }
