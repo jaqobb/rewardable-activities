@@ -40,14 +40,14 @@ public final class BlockBreakListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockBreakListener(final RewardableActivitiesPlugin plugin) {
+    public BlockBreakListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockBreak(final BlockBreakEvent event) {
+    public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        Block block = event.getBlock();
+        Block  block  = event.getBlock();
         if (this.plugin.isBlockPlaceOwnershipCheckEnabled() && !this.plugin.hasMetadata(block, RewardableActivitiesConstants.BLOCK_BROKEN_BY_PLAYER_KEY)) {
             this.plugin.setMetadata(block, RewardableActivitiesConstants.BLOCK_BROKEN_BY_PLAYER_KEY, true);
         }

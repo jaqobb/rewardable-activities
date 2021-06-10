@@ -34,14 +34,11 @@ public final class RandomUtils {
         throw new UnsupportedOperationException("Cannot create instance of this class");
     }
 
-    public static double getRandomDouble(
-        final double minimum,
-        final double maximum
-    ) {
+    public static double getRandomDouble(double minimum, double maximum) {
         return (RANDOM.nextDouble() * (maximum - minimum)) + minimum;
     }
 
-    public static boolean chance(final double chance) {
+    public static boolean chance(double chance) {
         return getRandomDouble(0.0D, 100.0D) <= chance;
     }
 }

@@ -42,17 +42,17 @@ public final class EntityDamageByEntityListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public EntityDamageByEntityListener(final RewardableActivitiesPlugin plugin) {
+    public EntityDamageByEntityListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof LivingEntity)) {
             return;
         }
-        LivingEntity victim = (LivingEntity) event.getEntity();
-        Player attacker = this.getPlayer(event.getDamager());
+        LivingEntity victim   = (LivingEntity) event.getEntity();
+        Player       attacker = this.getPlayer(event.getDamager());
         if (attacker == null) {
             return;
         }
@@ -75,12 +75,12 @@ public final class EntityDamageByEntityListener implements Listener {
         }
     }
 
-    private Player getPlayer(final Entity entity) {
+    private Player getPlayer(Entity entity) {
         if (entity instanceof Player) {
             return (Player) entity;
         }
         if (entity instanceof Projectile) {
-            Projectile projectile = (Projectile) entity;
+            Projectile       projectile       = (Projectile) entity;
             ProjectileSource projectileSource = projectile.getShooter();
             if (projectileSource instanceof Player) {
                 return (Player) projectileSource;

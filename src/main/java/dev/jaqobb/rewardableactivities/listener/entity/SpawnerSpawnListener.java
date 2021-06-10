@@ -35,12 +35,12 @@ public final class SpawnerSpawnListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public SpawnerSpawnListener(final RewardableActivitiesPlugin plugin) {
+    public SpawnerSpawnListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntitySpawn(final SpawnerSpawnEvent event) {
+    public void onEntitySpawn(SpawnerSpawnEvent event) {
         if (this.plugin.isEntitySpawnerOwnershipCheckEnabled()) {
             this.plugin.setMetadata(event.getEntity(), RewardableActivitiesConstants.ENTITY_SPAWNED_BY_SPAWNER_KEY, true);
         }

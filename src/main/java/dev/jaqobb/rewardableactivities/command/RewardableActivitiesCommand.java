@@ -35,17 +35,12 @@ public final class RewardableActivitiesCommand implements CommandExecutor {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public RewardableActivitiesCommand(final RewardableActivitiesPlugin plugin) {
+    public RewardableActivitiesCommand(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(
-        final CommandSender sender,
-        final Command command,
-        final String label,
-        final String[] arguments
-    ) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         if (!sender.hasPermission("rewardableactivities.command.rewardableactivities")) {
             sender.sendMessage(RewardableActivitiesConstants.PREFIX + ChatColor.RED + "You do not have the required permissions to do that.");
             return true;

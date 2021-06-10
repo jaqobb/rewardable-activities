@@ -40,23 +40,23 @@ import org.bukkit.entity.EntityType;
 
 public final class RewardableActivityRepository {
 
-    private final RewardableActivitiesPlugin plugin;
-    private final Map<XMaterial, RewardableActivity> blockBreakRewardableActivities;
-    private final Map<XMaterial, RewardableActivity> blockPlaceRewardableActivities;
+    private final RewardableActivitiesPlugin          plugin;
+    private final Map<XMaterial, RewardableActivity>  blockBreakRewardableActivities;
+    private final Map<XMaterial, RewardableActivity>  blockPlaceRewardableActivities;
     private final Map<EntityType, RewardableActivity> entityKillRewardableActivities;
     private final Map<EntityType, RewardableActivity> entityBreedRewardableActivities;
-    private final Map<XMaterial, RewardableActivity> itemFishRewardableActivities;
+    private final Map<XMaterial, RewardableActivity>  itemFishRewardableActivities;
 
-    public RewardableActivityRepository(final RewardableActivitiesPlugin plugin) {
-        this.plugin = plugin;
-        this.blockBreakRewardableActivities = new EnumMap<>(XMaterial.class);
-        this.blockPlaceRewardableActivities = new EnumMap<>(XMaterial.class);
-        this.entityKillRewardableActivities = new EnumMap<>(EntityType.class);
+    public RewardableActivityRepository(RewardableActivitiesPlugin plugin) {
+        this.plugin                          = plugin;
+        this.blockBreakRewardableActivities  = new EnumMap<>(XMaterial.class);
+        this.blockPlaceRewardableActivities  = new EnumMap<>(XMaterial.class);
+        this.entityKillRewardableActivities  = new EnumMap<>(EntityType.class);
         this.entityBreedRewardableActivities = new EnumMap<>(EntityType.class);
-        this.itemFishRewardableActivities = new EnumMap<>(XMaterial.class);
+        this.itemFishRewardableActivities    = new EnumMap<>(XMaterial.class);
     }
 
-    public void loadAllRewardableActivities(final boolean reload) {
+    public void loadAllRewardableActivities(boolean reload) {
         this.loadBlockBreakRewardableActivities(reload);
         this.loadBlockPlaceRewardableActivities(reload);
         this.loadEntityKillRewardableActivities(reload);
@@ -64,7 +64,7 @@ public final class RewardableActivityRepository {
         this.loadItemFishRewardableActivities(reload);
     }
 
-    public void loadBlockBreakRewardableActivities(final boolean reload) {
+    public void loadBlockBreakRewardableActivities(boolean reload) {
         if (reload) {
             this.blockBreakRewardableActivities.clear();
         }
@@ -77,7 +77,7 @@ public final class RewardableActivityRepository {
         }));
     }
 
-    public void loadBlockPlaceRewardableActivities(final boolean reload) {
+    public void loadBlockPlaceRewardableActivities(boolean reload) {
         if (reload) {
             this.blockPlaceRewardableActivities.clear();
         }
@@ -90,21 +90,21 @@ public final class RewardableActivityRepository {
         }));
     }
 
-    public void loadEntityKillRewardableActivities(final boolean reload) {
+    public void loadEntityKillRewardableActivities(boolean reload) {
         if (reload) {
             this.entityKillRewardableActivities.clear();
         }
         this.entityKillRewardableActivities.putAll(this.loadRewardableActivities("entity.kill", entityType -> EntityType.valueOf(entityType.toUpperCase())));
     }
 
-    public void loadEntityBreedRewardableActivities(final boolean reload) {
+    public void loadEntityBreedRewardableActivities(boolean reload) {
         if (reload) {
             this.entityBreedRewardableActivities.clear();
         }
         this.entityBreedRewardableActivities.putAll(this.loadRewardableActivities("entity.breed", entityType -> EntityType.valueOf(entityType.toUpperCase())));
     }
 
-    public void loadItemFishRewardableActivities(final boolean reload) {
+    public void loadItemFishRewardableActivities(boolean reload) {
         if (reload) {
             this.itemFishRewardableActivities.clear();
         }
@@ -118,36 +118,33 @@ public final class RewardableActivityRepository {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Map<T, RewardableActivity> loadRewardableActivities(
-        final String path,
-        final Function<String, T> keyFunction
-    ) {
+    private <T> Map<T, RewardableActivity> loadRewardableActivities(String path, Function<String, T> keyFunction) {
         Map<T, RewardableActivity> rewardableActivities = new HashMap<>(16);
-        ConfigurationSection mainSection = this.plugin.getConfig().getConfigurationSection(path);
+        ConfigurationSection       mainSection          = this.plugin.getConfig().getConfigurationSection(path);
         if (mainSection == null) {
             return rewardableActivities;
         }
         for (String key : mainSection.getKeys(false)) {
-            Map<String, List<RewardableActivityReward>> rewards = new LinkedHashMap<>(16);
-            ConfigurationSection rewardsSection = mainSection.getConfigurationSection(key);
+            Map<String, List<RewardableActivityReward>> rewards        = new LinkedHashMap<>(16);
+            ConfigurationSection                        rewardsSection = mainSection.getConfigurationSection(key);
             for (String group : rewardsSection.getKeys(false)) {
                 if (rewardsSection.isList(group)) {
                     List<RewardableActivityReward> rewardRewards = new LinkedList<>();
                     for (Map<?, ?> rewardReward : rewardsSection.getMapList(group)) {
-                        Number chance = (Number) rewardReward.get("chance");
-                        Number minimumEconomy = rewardReward.containsKey("minimum-economy") ? (Number) rewardReward.get("minimum-economy") : 0.0D;
-                        Number maximumEconomy = rewardReward.containsKey("maximum-economy") ? (Number) rewardReward.get("maximum-economy") : 0.0D;
-                        Collection<String> commands = (List<String>) rewardReward.get("commands");
+                        Number             chance         = (Number) rewardReward.get("chance");
+                        Number             minimumEconomy = rewardReward.containsKey("minimum-economy") ? (Number) rewardReward.get("minimum-economy") : 0.0D;
+                        Number             maximumEconomy = rewardReward.containsKey("maximum-economy") ? (Number) rewardReward.get("maximum-economy") : 0.0D;
+                        Collection<String> commands       = (List<String>) rewardReward.get("commands");
                         rewardRewards.add(new RewardableActivityReward(group, chance.doubleValue(), minimumEconomy.doubleValue(), maximumEconomy.doubleValue(), commands));
                     }
                     rewards.put(group, rewardRewards);
                 } else {
-                    List<RewardableActivityReward> rewardRewards = new LinkedList<>();
-                    ConfigurationSection rewardSection = rewardsSection.getConfigurationSection(group);
-                    Number chance = (Number) rewardSection.get("chance");
-                    Number minimumEconomy = rewardSection.isSet("minimum-economy") ? (Number) rewardSection.get("minimum-economy") : 0.0D;
-                    Number maximumEconomy = rewardSection.isSet("maximum-economy") ? (Number) rewardSection.get("maximum-economy") : 0.0D;
-                    Collection<String> commands = rewardSection.getStringList("commands");
+                    List<RewardableActivityReward> rewardRewards  = new LinkedList<>();
+                    ConfigurationSection           rewardSection  = rewardsSection.getConfigurationSection(group);
+                    Number                         chance         = (Number) rewardSection.get("chance");
+                    Number                         minimumEconomy = rewardSection.isSet("minimum-economy") ? (Number) rewardSection.get("minimum-economy") : 0.0D;
+                    Number                         maximumEconomy = rewardSection.isSet("maximum-economy") ? (Number) rewardSection.get("maximum-economy") : 0.0D;
+                    Collection<String>             commands       = rewardSection.getStringList("commands");
                     rewardRewards.add(new RewardableActivityReward(group, chance.doubleValue(), minimumEconomy.doubleValue(), maximumEconomy.doubleValue(), commands));
                     rewards.put(group, rewardRewards);
                 }
@@ -161,7 +158,7 @@ public final class RewardableActivityRepository {
         return Collections.unmodifiableCollection(this.blockBreakRewardableActivities.values());
     }
 
-    public RewardableActivity getBlockBreakRewardableActivity(final XMaterial material) {
+    public RewardableActivity getBlockBreakRewardableActivity(XMaterial material) {
         return this.blockBreakRewardableActivities.get(material);
     }
 
@@ -169,7 +166,7 @@ public final class RewardableActivityRepository {
         return Collections.unmodifiableCollection(this.blockPlaceRewardableActivities.values());
     }
 
-    public RewardableActivity getBlockPlaceRewardableActivity(final XMaterial material) {
+    public RewardableActivity getBlockPlaceRewardableActivity(XMaterial material) {
         return this.blockPlaceRewardableActivities.get(material);
     }
 
@@ -177,7 +174,7 @@ public final class RewardableActivityRepository {
         return Collections.unmodifiableCollection(this.entityKillRewardableActivities.values());
     }
 
-    public RewardableActivity getEntityKillRewardableActivity(final EntityType entityType) {
+    public RewardableActivity getEntityKillRewardableActivity(EntityType entityType) {
         return this.entityKillRewardableActivities.get(entityType);
     }
 
@@ -185,7 +182,7 @@ public final class RewardableActivityRepository {
         return Collections.unmodifiableCollection(this.entityBreedRewardableActivities.values());
     }
 
-    public RewardableActivity getEntityBreedRewardableActivity(final EntityType entityType) {
+    public RewardableActivity getEntityBreedRewardableActivity(EntityType entityType) {
         return this.entityBreedRewardableActivities.get(entityType);
     }
 
@@ -193,7 +190,7 @@ public final class RewardableActivityRepository {
         return Collections.unmodifiableCollection(this.itemFishRewardableActivities.values());
     }
 
-    public RewardableActivity getItemFishRewardableActivity(final XMaterial material) {
+    public RewardableActivity getItemFishRewardableActivity(XMaterial material) {
         return this.itemFishRewardableActivities.get(material);
     }
 }

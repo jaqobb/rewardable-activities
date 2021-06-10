@@ -37,12 +37,12 @@ public final class BlockExplodeListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockExplodeListener(final RewardableActivitiesPlugin plugin) {
+    public BlockExplodeListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockExplode(final BlockExplodeEvent event) {
+    public void onBlockExplode(BlockExplodeEvent event) {
         if (!this.plugin.isBlockBreakOwnershipCheckEnabled()) {
             return;
         }

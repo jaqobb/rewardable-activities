@@ -34,12 +34,12 @@ public final class BlockPistonExtendListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockPistonExtendListener(final RewardableActivitiesPlugin plugin) {
+    public BlockPistonExtendListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockPistonExtend(final BlockPistonExtendEvent event) {
+    public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         if (this.plugin.isBlockBreakOwnershipCheckEnabled()) {
             this.plugin.updatePistonBlocks(event.getDirection(), event.getBlocks());
         }

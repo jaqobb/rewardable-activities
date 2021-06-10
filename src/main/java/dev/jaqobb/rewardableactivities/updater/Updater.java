@@ -39,19 +39,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 public final class Updater extends BukkitRunnable {
 
     private final RewardableActivitiesPlugin plugin;
-    private final int pluginId;
-    private final String currentVersion;
-    private String latestVersion;
-    private Integer versionDifference;
+    private final int                        pluginId;
+    private final String                     currentVersion;
+    private       String                     latestVersion;
+    private       Integer                    versionDifference;
 
-    public Updater(
-        final RewardableActivitiesPlugin plugin,
-        final int pluginId
-    ) {
-        this.plugin = plugin;
-        this.pluginId = pluginId;
-        this.currentVersion = this.plugin.getDescription().getVersion();
-        this.latestVersion = null;
+    public Updater(RewardableActivitiesPlugin plugin, int pluginId) {
+        this.plugin            = plugin;
+        this.pluginId          = pluginId;
+        this.currentVersion    = this.plugin.getDescription().getVersion();
+        this.latestVersion     = null;
         this.versionDifference = null;
     }
 
@@ -89,36 +86,22 @@ public final class Updater extends BukkitRunnable {
             return;
         }
         try {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL(
-                "https://api.spigotmc.org/legacy/update.php?resource=" + this.pluginId
-            ).openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.pluginId).openConnection();
             connection.setRequestMethod("GET");
-            try (
-                InputStream input = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))
-            ) {
+            try (InputStream input = connection.getInputStream(); BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
                 this.latestVersion = reader.readLine();
                 String[] currentVersionData = this.currentVersion.split("\\.");
-                String[] latestVersionData = this.latestVersion.split("\\.");
+                String[] latestVersionData  = this.latestVersion.split("\\.");
                 if (currentVersionData.length == 3 && latestVersionData.length == 3) {
-                    int majorVersionDifference = Integer.compare(
-                        Integer.parseInt(currentVersionData[0]),
-                        Integer.parseInt(latestVersionData[0])
-                    );
+                    int majorVersionDifference = Integer.compare(Integer.parseInt(currentVersionData[0]), Integer.parseInt(latestVersionData[0]));
                     if (majorVersionDifference != 0) {
                         this.versionDifference = majorVersionDifference;
                     } else {
-                        int minorVersionDifference = Integer.compare(
-                            Integer.parseInt(currentVersionData[1]),
-                            Integer.parseInt(latestVersionData[1])
-                        );
+                        int minorVersionDifference = Integer.compare(Integer.parseInt(currentVersionData[1]), Integer.parseInt(latestVersionData[1]));
                         if (minorVersionDifference != 0) {
                             this.versionDifference = minorVersionDifference;
                         } else {
-                            this.versionDifference = Integer.compare(
-                                Integer.parseInt(currentVersionData[2]),
-                                Integer.parseInt(latestVersionData[2])
-                            );
+                            this.versionDifference = Integer.compare(Integer.parseInt(currentVersionData[2]), Integer.parseInt(latestVersionData[2]));
                         }
                     }
                 }

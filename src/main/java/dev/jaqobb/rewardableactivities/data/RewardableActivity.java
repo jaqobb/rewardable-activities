@@ -31,14 +31,11 @@ import org.bukkit.entity.Player;
 
 public final class RewardableActivity {
 
-    private final String id;
+    private final String                                      id;
     private final Map<String, List<RewardableActivityReward>> rewards;
 
-    public RewardableActivity(
-        final String id,
-        final Map<String, List<RewardableActivityReward>> rewards
-    ) {
-        this.id = id;
+    public RewardableActivity(String id, Map<String, List<RewardableActivityReward>> rewards) {
+        this.id      = id;
         this.rewards = rewards;
     }
 
@@ -50,7 +47,7 @@ public final class RewardableActivity {
         return Collections.unmodifiableMap(this.rewards);
     }
 
-    public List<RewardableActivityReward> getRewards(final Player player) {
+    public List<RewardableActivityReward> getRewards(Player player) {
         String groupToUse = "default";
         for (String group : this.rewards.keySet()) {
             if (player.hasPermission("rewardableactivities.group." + group)) {
@@ -60,7 +57,7 @@ public final class RewardableActivity {
         return this.rewards.get(groupToUse);
     }
 
-    public RewardableActivityReward getReward(final Player player) {
+    public RewardableActivityReward getReward(Player player) {
         for (RewardableActivityReward reward : this.getRewards(player)) {
             if (reward.testChance()) {
                 return reward;

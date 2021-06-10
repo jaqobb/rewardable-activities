@@ -34,12 +34,12 @@ public final class BlockPistonRetractListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockPistonRetractListener(final RewardableActivitiesPlugin plugin) {
+    public BlockPistonRetractListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockPistonRetract(final BlockPistonRetractEvent event) {
+    public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (!event.isSticky()) {
             return;
         }

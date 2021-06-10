@@ -35,12 +35,12 @@ public final class PlayerJoinListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public PlayerJoinListener(final RewardableActivitiesPlugin plugin) {
+    public PlayerJoinListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(final PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.hasPermission("rewardableactivities.updater.notify")) {
             player.sendMessage(this.plugin.getUpdater().getUpdateMessage());

@@ -37,12 +37,12 @@ public final class EntityExplodeListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public EntityExplodeListener(final RewardableActivitiesPlugin plugin) {
+    public EntityExplodeListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityExplode(final EntityExplodeEvent event) {
+    public void onEntityExplode(EntityExplodeEvent event) {
         if (!this.plugin.isBlockBreakOwnershipCheckEnabled()) {
             return;
         }

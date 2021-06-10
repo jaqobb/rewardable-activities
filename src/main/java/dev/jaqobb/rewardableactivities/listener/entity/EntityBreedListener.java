@@ -39,13 +39,13 @@ public final class EntityBreedListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public EntityBreedListener(final RewardableActivitiesPlugin plugin) {
+    public EntityBreedListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityBreed(final EntityBreedEvent event) {
-        Entity child = event.getEntity();
+    public void onEntityBreed(EntityBreedEvent event) {
+        Entity child   = event.getEntity();
         Entity breeder = event.getBreeder();
         if (breeder == null) {
             return;

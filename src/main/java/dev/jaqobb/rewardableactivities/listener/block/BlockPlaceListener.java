@@ -40,14 +40,14 @@ public final class BlockPlaceListener implements Listener {
 
     private final RewardableActivitiesPlugin plugin;
 
-    public BlockPlaceListener(final RewardableActivitiesPlugin plugin) {
+    public BlockPlaceListener(RewardableActivitiesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockPlace(final BlockPlaceEvent event) {
+    public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        Block block = event.getBlock();
+        Block  block  = event.getBlock();
         if (this.plugin.isBlockBreakOwnershipCheckEnabled()) {
             this.plugin.setMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY, true);
         }

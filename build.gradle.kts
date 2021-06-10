@@ -1,11 +1,11 @@
 plugins {
     java
-    id("net.minecrell.plugin-yml.bukkit") version "0.3.0"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("net.minecrell.plugin-yml.bukkit") version "0.4.0"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "dev.jaqobb"
-version = "1.8.2"
+version = "1.8.3-SNAPSHOT"
 description = "Reward players when they do certain activities"
 
 java {
@@ -64,6 +64,7 @@ repositories {
         }
     }
     maven("http://nexus.hc.to/content/repositories/pub_releases/") {
+        isAllowInsecureProtocol = true
         content {
             includeGroup("net.milkbowl.vault")
         }

@@ -33,24 +33,18 @@ import org.bukkit.entity.Player;
 
 public final class RewardableActivityReward {
 
-    private final String group;
-    private final double chance;
-    private final double minimumEconomy;
-    private final double maximumEconomy;
+    private final String             group;
+    private final double             chance;
+    private final double             minimumEconomy;
+    private final double             maximumEconomy;
     private final Collection<String> commands;
 
-    public RewardableActivityReward(
-        final String group,
-        final double chance,
-        final double minimumEconomy,
-        final double maximumEconomy,
-        final Collection<String> commands
-    ) {
-        this.group = group;
-        this.chance = chance;
+    public RewardableActivityReward(String group, double chance, double minimumEconomy, double maximumEconomy, Collection<String> commands) {
+        this.group          = group;
+        this.chance         = chance;
         this.minimumEconomy = minimumEconomy;
         this.maximumEconomy = maximumEconomy;
-        this.commands = commands;
+        this.commands       = commands;
     }
 
     public String getGroup() {
@@ -77,11 +71,7 @@ public final class RewardableActivityReward {
         return RandomUtils.getRandomDouble(this.minimumEconomy, this.maximumEconomy);
     }
 
-    public void depositEconomy(
-        final Economy economy,
-        final Player player,
-        final double economyToDeposit
-    ) {
+    public void depositEconomy(Economy economy, Player player, double economyToDeposit) {
         economy.depositPlayer(player, economyToDeposit);
     }
 
@@ -89,14 +79,11 @@ public final class RewardableActivityReward {
         return Collections.unmodifiableCollection(this.commands);
     }
 
-    public void executeCommands(final Player player) {
+    public void executeCommands(Player player) {
         this.commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{player}", player.getName()).replace("{group}", this.group)));
     }
 
-    public void reward(
-        final Economy economy,
-        final Player player
-    ) {
+    public void reward(Economy economy, Player player) {
         if (economy != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy <= this.maximumEconomy) {
             double randomEconomy = this.getRandomEconomy();
             if (randomEconomy > 0.0D) {
