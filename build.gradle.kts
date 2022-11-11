@@ -1,7 +1,7 @@
 plugins {
     java
-    id("net.minecrell.plugin-yml.bukkit") version "0.4.0"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "dev.jaqobb"
@@ -15,10 +15,10 @@ java {
 
 bukkit {
     name = "RewardableActivities"
-    main = "dev.jaqobb.rewardableactivities.RewardableActivitiesPlugin"
+    main = "dev.jaqobb.rewardable_activities.RewardableActivitiesPlugin"
     version = project.version as String
     apiVersion = "1.13"
-    softDepend = listOf("Vault", "PlaceholderAPI", "MVdWPlaceholderAPI")
+    softDepend = listOf("Vault", "PlaceholderAPI")
     description = project.description
     author = "jaqobb"
     website = "https://jaqobb.dev"
@@ -47,8 +47,9 @@ tasks {
         exclude("com/cryptomorin/xseries/XItemStack*")
         exclude("com/cryptomorin/xseries/XPotion*")
         exclude("com/cryptomorin/xseries/XSound*")
-        relocate("com.cryptomorin.xseries", "dev.jaqobb.rewardableactivities.library.xseries")
-        relocate("org.bstats", "dev.jaqobb.rewardableactivities.metrics")
+        exclude("com/cryptomorin/xseries/XTag*")
+        relocate("com.cryptomorin.xseries", "dev.jaqobb.rewardable_activities.library.xseries")
+        relocate("org.bstats", "dev.jaqobb.rewardable_activities.metrics")
     }
 }
 
@@ -64,8 +65,7 @@ repositories {
             includeGroup("net.md-5")
         }
     }
-    maven("http://nexus.hc.to/content/repositories/pub_releases/") {
-        isAllowInsecureProtocol = true
+    maven("https://nexus.hc.to/content/repositories/pub_releases/") {
         content {
             includeGroup("net.milkbowl.vault")
         }
@@ -73,12 +73,6 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") {
         content {
             includeGroup("me.clip")
-        }
-    }
-    maven("http://repo.mvdw-software.be/content/groups/public/") {
-        isAllowInsecureProtocol = true
-        content {
-            includeGroup("be.maximvdw")
         }
     }
     maven("https://repo.codemc.org/repository/maven-public/") {
@@ -89,12 +83,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT")
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
-    compileOnly("me.clip:placeholderapi:2.10.9")
-    compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT") {
-        exclude("org.spigotmc")
-    }
-    implementation("com.github.cryptomorin:XSeries:8.1.0")
-    implementation("org.bstats:bstats-bukkit:2.2.1")
+    compileOnly("me.clip:placeholderapi:2.11.2")
+    implementation("com.github.cryptomorin:XSeries:9.1.0")
+    implementation("org.bstats:bstats-bukkit:3.0.0")
 }
