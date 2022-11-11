@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.jaqobb"
-version = "1.8.5-SNAPSHOT"
+version = "1.8.5"
 description = "Reward players when they do certain activities"
 
 java {
