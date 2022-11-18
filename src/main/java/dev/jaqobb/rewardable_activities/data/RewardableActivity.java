@@ -31,11 +31,11 @@ import org.bukkit.entity.Player;
 
 public final class RewardableActivity {
 
-    private final String                                      id;
+    private final String id;
     private final Map<String, List<RewardableActivityReward>> rewards;
 
     public RewardableActivity(String id, Map<String, List<RewardableActivityReward>> rewards) {
-        this.id      = id;
+        this.id = id;
         this.rewards = rewards;
     }
 

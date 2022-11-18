@@ -31,7 +31,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.plugin.Plugin;
 
 public final class PluginEnableListener implements Listener {
 
@@ -43,8 +42,7 @@ public final class PluginEnableListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent event) {
-        Plugin plugin = event.getPlugin();
-        if (plugin.getName().equals(RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME)) {
+        if (event.getPlugin().getName().equals(RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME)) {
             this.plugin.setPlaceholderApiPresent(true);
             this.plugin.getLogger().log(Level.INFO, RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME + " integration has been enabled.");
         }

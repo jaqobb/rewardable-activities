@@ -31,7 +31,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.plugin.Plugin;
 
 public final class PluginDisableListener implements Listener {
 
@@ -43,8 +42,7 @@ public final class PluginDisableListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisable(PluginDisableEvent event) {
-        Plugin plugin = event.getPlugin();
-        if (plugin.getName().equals(RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME)) {
+        if (event.getPlugin().getName().equals(RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME)) {
             this.plugin.setPlaceholderApiPresent(false);
             this.plugin.getLogger().log(Level.INFO, RewardableActivitiesConstants.PLACEHOLDER_API_PLUGIN_NAME + " integration has been disabled.");
         }

@@ -51,8 +51,8 @@ public final class EntityDamageByEntityListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity)) {
             return;
         }
-        LivingEntity victim   = (LivingEntity) event.getEntity();
-        Player       attacker = this.getPlayer(event.getDamager());
+        LivingEntity victim = (LivingEntity) event.getEntity();
+        Player attacker = this.getPlayer(event.getDamager());
         if (attacker == null) {
             return;
         }
@@ -65,7 +65,7 @@ public final class EntityDamageByEntityListener implements Listener {
         if (this.plugin.isEntitySpawnerOwnershipCheckEnabled() && this.plugin.hasMetadata(victim, RewardableActivitiesConstants.ENTITY_SPAWNED_BY_SPAWNER_KEY)) {
             return;
         }
-        RewardableActivity activity = this.plugin.getRepository().getEntityKillRewardableActivity(victim.getType());
+        RewardableActivity activity = this.plugin.getRepository().getEntityKillActivity(victim.getType());
         if (activity == null) {
             return;
         }
@@ -80,7 +80,7 @@ public final class EntityDamageByEntityListener implements Listener {
             return (Player) entity;
         }
         if (entity instanceof Projectile) {
-            Projectile       projectile       = (Projectile) entity;
+            Projectile projectile = (Projectile) entity;
             ProjectileSource projectileSource = projectile.getShooter();
             if (projectileSource instanceof Player) {
                 return (Player) projectileSource;

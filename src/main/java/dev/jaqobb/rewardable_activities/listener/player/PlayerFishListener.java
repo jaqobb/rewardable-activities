@@ -46,16 +46,16 @@ public final class PlayerFishListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
-        Player player = event.getPlayer();
         Entity caught = event.getCaught();
         if (caught == null) {
             return;
         }
-        Item               caughtItem         = (Item) caught;
-        RewardableActivity activity = this.plugin.getRepository().getItemFishRewardableActivity(XMaterial.matchXMaterial(caughtItem.getItemStack().getType()));
+        Item caughtItem = (Item) caught;
+        RewardableActivity activity = this.plugin.getRepository().getItemFishActivity(XMaterial.matchXMaterial(caughtItem.getItemStack().getType()));
         if (activity == null) {
             return;
         }
+        Player player = event.getPlayer();
         RewardableActivityReward reward = activity.getReward(player);
         if (reward != null) {
             reward.reward(this.plugin, player);

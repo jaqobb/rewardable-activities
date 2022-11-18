@@ -56,15 +56,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RewardableActivitiesPlugin extends JavaPlugin {
 
-    private boolean                      blockBreakOwnershipCheckEnabled;
-    private boolean                      blockPlaceOwnershipCheckEnabled;
-    private boolean                      entityBreedOwnershipCheckEnabled;
-    private boolean                      entitySpawnerOwnershipCheckEnabled;
+    private boolean blockBreakOwnershipCheckEnabled;
+    private boolean blockPlaceOwnershipCheckEnabled;
+    private boolean entityBreedOwnershipCheckEnabled;
+    private boolean entitySpawnerOwnershipCheckEnabled;
     private RewardableActivityRepository repository;
-    private boolean                      placeholderApiPresent;
-    private Metrics                      metrics;
-    private Updater                      updater;
-    private Economy                      economy;
+    private boolean placeholderApiPresent;
+    private Metrics metrics;
+    private Updater updater;
+    private Economy economy;
 
     @Override
     public void onLoad() {
@@ -111,15 +111,15 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
 
     public void loadConfig(boolean reload) {
         this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oading configuration...");
-        this.blockBreakOwnershipCheckEnabled    = this.getConfig().getBoolean("block.ownership-check.break", this.getConfig().getBoolean("block.ownership-check.place", this.getConfig().getBoolean("block.ownership-check")));
-        this.blockPlaceOwnershipCheckEnabled    = this.getConfig().getBoolean("block.ownership-check.place", true);
-        this.entityBreedOwnershipCheckEnabled   = this.getConfig().getBoolean("entity.ownership-check.breed", this.getConfig().getBoolean("entity.ownership-check", true));
+        this.blockBreakOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check.break", this.getConfig().getBoolean("block.ownership-check.place", this.getConfig().getBoolean("block.ownership-check")));
+        this.blockPlaceOwnershipCheckEnabled = this.getConfig().getBoolean("block.ownership-check.place", true);
+        this.entityBreedOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check.breed", this.getConfig().getBoolean("entity.ownership-check", true));
         this.entitySpawnerOwnershipCheckEnabled = this.getConfig().getBoolean("entity.ownership-check.spawner", true);
         this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oading rewardable activities...");
         if (this.repository == null) {
             this.repository = new RewardableActivityRepository(this);
         }
-        this.repository.loadAllRewardableActivities(reload);
+        this.repository.loadAllActivities(reload);
         this.getLogger().log(Level.INFO, (reload ? "Rel" : "L") + "oaded rewardable activities:");
         this.getLogger().log(Level.INFO, " * Block break: " + this.repository.getBlockBreakActivities().size());
         this.getLogger().log(Level.INFO, " * Block place: " + this.repository.getBlockPlaceActivities().size());
@@ -185,7 +185,7 @@ public final class RewardableActivitiesPlugin extends JavaPlugin {
     }
 
     public void updatePistonBlocks(BlockFace direction, List<Block> blocks) {
-        List<Block> blocksPlacedByPlayer         = new ArrayList<>(blocks.size());
+        List<Block> blocksPlacedByPlayer = new ArrayList<>(blocks.size());
         List<Block> blocksSoonToBePlacedByPlayer = new ArrayList<>(blocks.size());
         for (Block block : blocks) {
             if (!blocksPlacedByPlayer.contains(block) && this.hasMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY)) {

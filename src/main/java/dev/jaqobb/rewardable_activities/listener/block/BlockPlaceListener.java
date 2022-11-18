@@ -46,8 +46,7 @@ public final class BlockPlaceListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        Block  block  = event.getBlock();
+        Block block = event.getBlock();
         if (this.plugin.isBlockBreakOwnershipCheckEnabled()) {
             this.plugin.setMetadata(block, RewardableActivitiesConstants.BLOCK_PLACED_BY_PLAYER_KEY, true);
         }
@@ -59,10 +58,11 @@ public final class BlockPlaceListener implements Listener {
                 return;
             }
         }
-        RewardableActivity activity = this.plugin.getRepository().getBlockPlaceRewardableActivity(XMaterial.matchXMaterial(block.getType()));
+        RewardableActivity activity = this.plugin.getRepository().getBlockPlaceActivity(XMaterial.matchXMaterial(block.getType()));
         if (activity == null) {
             return;
         }
+        Player player = event.getPlayer();
         RewardableActivityReward reward = activity.getReward(player);
         if (reward != null) {
             reward.reward(this.plugin, player);

@@ -34,18 +34,18 @@ import org.bukkit.entity.Player;
 
 public final class RewardableActivityReward {
 
-    private final String             group;
-    private final double             chance;
-    private final double             minimumEconomy;
-    private final double             maximumEconomy;
+    private final String group;
+    private final double chance;
+    private final double minimumEconomy;
+    private final double maximumEconomy;
     private final Collection<String> commands;
 
     public RewardableActivityReward(String group, double chance, double minimumEconomy, double maximumEconomy, Collection<String> commands) {
-        this.group          = group;
-        this.chance         = chance;
+        this.group = group;
+        this.chance = chance;
         this.minimumEconomy = minimumEconomy;
         this.maximumEconomy = maximumEconomy;
-        this.commands       = commands;
+        this.commands = commands;
     }
 
     public String getGroup() {
@@ -72,8 +72,8 @@ public final class RewardableActivityReward {
         return RandomUtils.getRandomDouble(this.minimumEconomy, this.maximumEconomy);
     }
 
-    public void depositEconomy(Economy economy, Player player, double economyToDeposit) {
-        economy.depositPlayer(player, economyToDeposit);
+    public void depositEconomy(Economy economy, Player player, double amount) {
+        economy.depositPlayer(player, amount);
     }
 
     public Collection<String> getCommands() {
@@ -92,9 +92,9 @@ public final class RewardableActivityReward {
 
     public void reward(RewardableActivitiesPlugin plugin, Player player) {
         if (plugin.getEconomy() != null && this.minimumEconomy >= 0.0D && this.maximumEconomy > 0.0D && this.minimumEconomy <= this.maximumEconomy) {
-            double randomEconomy = this.getRandomEconomy();
-            if (randomEconomy > 0.0D) {
-                this.depositEconomy(plugin.getEconomy(), player, randomEconomy);
+            double economy = this.getRandomEconomy();
+            if (economy > 0.0D) {
+                this.depositEconomy(plugin.getEconomy(), player, economy);
             }
         }
         this.executeCommands(plugin, player);
