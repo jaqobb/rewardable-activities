@@ -52,8 +52,17 @@ case "${1}" in
     set -e
     cd "${base_folder}"
     rm -rf "server"
+    mkdir -p "server/buildtools"
     mkdir -p "server/plugins"
     echo "The test server files have been cleaned."
+  )
+  ;;
+"prepare")
+  (
+    set -e
+    cd "${base_folder}"
+    mkdir -p "server/buildtools"
+    mkdir -p "server/plugins"
   )
   ;;
 *)
@@ -65,6 +74,7 @@ case "${1}" in
     echo " * copy                         | Compiles and copies the plugin to the test server files."
     echo " * start                        | Starts the test server."
     echo " * clean                        | Cleans the test server files."
+    echo " * prepare                      | Creates the test server's empty core directories."
   )
   ;;
 esac
